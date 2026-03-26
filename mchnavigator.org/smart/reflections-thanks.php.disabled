@@ -1,0 +1,32 @@
+<?php
+include("account/cookie.php");
+include_once( "/home/dh_mch_sftp/globals/filemaker_init.php" );
+$fm = db_connect( "MCH-Navigator" );
+$record = $fm->getRecordById( 'MCH_Smart_Dashboard', $uID );
+
+
+$section = 'assessment';
+$page = 'Reflections';
+include ('incl/header.html');
+?>
+<div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+	<?php include('incl/nav_generic.html'); ?>
+
+	<div class="ten columns">
+		<div id="page_title"><img src="images/Dashboard-lightbulb-concept.jpg" alt="lightbulb and paper with pencil">
+		  <div class="v">
+		    <h1>Thanks!</h1>
+		  </div>
+		</div>
+
+
+		<p><img src="images/thanks-for-sharing.jpg" width="300" height="300" alt="MCHtalk logo" class="right border" />Thank you for sharing your reflections about your learning experience. We will add your reflections to the MCHtalk blog; it is our hope that this blog becomes a repository of motivational stories to further build the MCH knowledge base in a personal, story-based way.</p>
+		<p>You are almost finished!</p>
+		<p>We know that it has been a long learning journey, but there is one last step... </p>
+
+		<p>Please share your feedback about MCHsmart with us. <a href="feedback.php"><strong>Evaluate this Curriculum</strong></a>.</p>
+
+	</div>
+</div>
+
+<?php include('incl/footer.html'); ?>

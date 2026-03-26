@@ -1,0 +1,47 @@
+<footer>
+<div class="container">
+	<div class="spotlight">
+		<div class="fcell">
+			<span>
+				<h3 style="color: #fff; margin-bottom: 1rem;">MCH Navigator</h3>
+				<p style="color: #ccc;">National Center for Education in Maternal and Child Health<br />
+				Georgetown University<br />
+				mchnavigator@ncemch.org</p>
+			</span>
+		</div>
+		<div class="fcell">
+			<ul class="fsocial">
+			  <li><a href="https://www.facebook.com/mchnavigator" target="_blank" class="facebook"><i class="mch-facebook"></i></a></li>
+			  <li><a href="https://twitter.com/mchnavigator" target="_blank" class="twitter"><i class="mch-twitter"></i></a></li>
+			  <li><a href="https://www.linkedin.com/company/mch-navigator" target="_blank" class="linkedin"><i class="mch-linkedin"></i></a></li>
+			  <li><a href="https://vimeo.com/ncemch" target="_blank" class="vimeo"><i class="mch-vimeo"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+</footer>
+<span class="btmtxt">This project is supported by the Health Resources and Services Administration (HRSA) of the U.S. Department of Health and Human Services (HHS) under grant number UE8MC25742; MCH Navigator for $180,000/year. This information or content and conclusions are those of the author and should not be construed as the official position or policy of, nor should any endorsements be inferred by HRSA, HHS or the U.S. Government.</span>
+<!-- End Document -->
+<script src="https://cdn.ncemch.org/js/jquery/jquery.min.js"></script>
+<script src="<? echo($baseURL) ?>js/common.js"></script>
+<script>
+
+//ReadMore Accordion
+	$('#info').readmore({
+  	  moreLink: '<a href="#">Usage, examples, and options</a>',
+  	  collapsedHeight: 384,
+  	  afterToggle: function(trigger, element, expanded) {
+  	    if(! expanded) { // The "Close" link was clicked
+  	 $('html, body').animate({scrollTop: $(element).offset().top}, {duration: 100});
+  	    }
+  	  }
+  	});
+  	$('article').readmore({speed: 500});
+
+//Fittext for Responsive H1 Headers
+  	$("#fittext1").fitText();
+  	$("#fittext2").fitText(0.8);
+  	$("#fittext3").fitText(1.2, { minFontSize: '18px', maxFontSize: '35px' });
+</script>
+</body>
+</html>

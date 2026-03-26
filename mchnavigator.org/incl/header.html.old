@@ -1,0 +1,135 @@
+<?php $baseURL="https://www.mchnavigator.org/"; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="author" content="MCH Navigator">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><?php echo $page_title; ?> | MCH Navigator</title>
+<meta name="description" content="The MCH Navigator is a learning portal for Maternal Child Health professionals and students working to improve the health of  individuals and families" />
+<meta name="keywords" content="<?php echo $keyWords ?>" />
+<!-- CSS -->
+<link rel="stylesheet" href="<? echo($baseURL) ?>css/styles.css">
+<script>
+  (function(d) {
+    var config = {
+      kitId: 'siz0oyc',
+      scriptTimeout: 3000,
+      async: true
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+
+<script src="https://cdn.ncemch.org/js/jquery/jquery.min.js"></script>
+</head>
+<body>
+<div class="banner">
+<div class="container">
+	<div class="row">
+	<div class="twelve columns"><span class="tlinks">
+		<a href="https://www.mchlibrary.org" target="_blank">MCH Library</a>
+		<a href="https://www.mchevidence.org" target="_blank">MCH Evidence</a>
+		<a href="https://ncemch.org" target="_blank">NCEMCH</a>
+		<a href="https://www.georgetown.edu" target="_blank">Georgetown University</a>
+		</span>
+		</div>
+	</div>
+</div>
+</div>
+<header>
+	<div class="spotlight">
+		<div class="hcell">
+			<a href="<? echo($baseURL) ?>" style="border: 0;"><img src="<? echo($baseURL) ?>images/logo.svg" class="logo" alt="MCH Navigator logo"></a>
+		</div>
+		<div class="hcell nlinks">
+
+<!--		<a href="<? echo($baseURL) ?>pronto" style="border: 0;"><img src="<? echo($baseURL) ?>images/pronto-new.svg" class="pronto"></a>-->
+		<span>
+			<div class="headerFlex">
+				<a href="https://www.mchnavigator.org/use/ideas-and-examples.php#academic">
+				<h3 class="newBannerLink">Advancing Academics: Resources for Students and Teachers (in partnership with ATMCH)</h3></a>
+				<!-- <a href="<? echo($baseURL) ?>about/new-competencies.php"><h3 class="newBannerLink"><i class="mch-link"></i>Updated Self-Assessment</h3></a> -->
+				<!-- <a href="https://www.mchneeds.net/"><h3 class="newBannerLink"><i class="mch-link"></i>Needs Assessment Toolkit</h3></a> -->
+			</div>
+			<a href="<? echo($baseURL) ?>trainings/competencies.php">MCH Competencies</a>
+			<a href="<? echo($baseURL) ?>transformation/index.php">Health Transformation</a>
+			<a href="<? echo($baseURL) ?>trainings/a-z.php">A-Z</a>
+			<a href="<? echo($baseURL) ?>trainings/search.php">Search <i class="mch-search" aria-hidden="true"></i></a>
+		</span>
+		</div>
+	</div>
+</header>
+<!-- Navigation -->
+<nav>
+<label for="show-menu" class="show-menu burger">MENU <i class="icon-reorder mch-arrow-down"></i></label>
+<input type="checkbox" id="show-menu" role="button">
+	<ul id="menu">
+		  <li <?php if ($section=="about") echo "class=\"active\""; ?>><a href="<? echo($baseURL) ?>about"> <i class="mch-anchor"></i> About</a>
+		    <ul>
+		      <li><a <?php if ($page=="about") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>about">About</a></li>
+		      <li><a <?php if ($page=="overview") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>about/overview.php">Overview &amp; Framework</a></li>
+		      <li><a <?php if ($page=="screening") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>about/screening-process.php">Screening Process</a></li>
+		      <li><a <?php if ($page=="team") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>about/team.php">Project Team &amp; Partners</a></li>
+		    </ul>
+		  </li>
+		  <li <?php if ($section=="use") echo "class=\"active\""; ?>><a href="<? echo($baseURL) ?>use"><i class="mch-scroll"></i> How to Use</a>
+		    <ul>
+		      <li><a <?php if ($page=="ideas") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>use/ideas-and-examples.php">Ideas &amp; Examples for Use</a></li>
+		      <li><a <?php if ($page=="brochures") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>use/brochures.php">Brochures for Sharing</a></li>
+		      <li><a <?php if ($page=="presentations") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>use/presentations.php">Presentations &amp; Publications</a></li>
+		    </ul>
+		  </li>
+		  <li <?php if ($section=="trainings") echo "class=\"active\""; ?>><a href="<? echo($baseURL) ?>trainings"><i class="mch-compass-2"></i> Trainings</a>
+		    <ul>
+		      <li><a <?php if ($page=="training") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>trainings">Trainings</a></li>
+		      <li><a <?php if ($page=="find") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>trainings/search.php">Find Trainings</a></li>
+		      <li><a <?php if ($page=="guides") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>trainings/topics.php">Learning Bundles &amp; Guides</a></li>
+		      <li><a <?php if ($page=="mch") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>trainings/competencies.php">MCH Leadership Competencies</a></li>
+		      <li><a <?php if ($page=="publichealth") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>trainings/phcompetencies.php">Public Health Competencies</a></li>
+		      <li><a <?php if ($page=="a-z") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>trainings/a-z.php">A-Z Trainings</a></li>
+		      <li><a <?php if ($page=="new") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>trainings/new.php">New</a></li>
+		      <li><a <?php if ($page=="help") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>trainings/help.php">Help</a></li>
+		    </ul>
+		  </li>
+		  <li <?php if ($section=="assessment") echo "class=\"active\""; ?>><a href="<? echo($baseURL) ?>assessment"><i class="mch-ship" style="font-size:1.25rem ; top: 3px"></i> Self-Assessment</a>
+		    <ul>
+		      <li><a <?php if ($page=="assess") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>assessment">Self-Assessment</a></li>
+		      <li><a <?php if ($page=="main") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>assessment/menu.php">Main Menu</a></li>
+		      <li><a <?php if ($page=="competency") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>assessment/v4/competency_01.php">Full Assessment</a></li>
+		      <li><a <?php if ($page=="individual") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>assessment/v4/individual-assessments.php">Individual Assessments</a></li>
+		      <li><a <?php if ($page=="personal") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>assessment/v4/learning-plan.php">Personalized Learning Plan</a></li>
+		    </ul>
+		  </li>
+		  <li <?php if ($section=="micro") echo "class=\"active\""; ?>><a href="<? echo($baseURL) ?>microlearning"><i class="mch-clock"></i> MicroLearning</a>
+		    <ul>
+		      <li><a <?php if ($page=="5min-overview") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>5min">5-Minute MCH Program</a></li>
+		    </ul>
+		  </li>
+		  <li <?php if ($section=="resources") echo "class=\"active\""; ?>><a href="<? echo($baseURL) ?>resources"><i class="mch-book-open"></i> Resources</a>
+		    <ul>
+		      <li><a <?php if ($page=="sites") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>resources/sites.php">Training Sites</a></li>
+		      <li><a <?php if ($page=="programs") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>resources/programs.php">MCH Training Programs</a></li>
+		      <li><a <?php if ($page=="links") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>resources/links.php">MCH Sites &amp; Links</a></li>
+		    </ul>
+		  </li>
+		  <li <?php if ($section=="comments") echo "class=\"active\""; ?>><a href="<? echo($baseURL) ?>connect"><i class="mch-letter-bottle" style="font-size:1.25rem ; top: 3px"></i> Connect</a>
+		    <ul>
+		      <li><a <?php if ($page=="alert") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>connect/alert.php">MCH Alert</a></li>
+		      <li><a <?php if ($page=="collaborative") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>connect/collaborative.php">Learning Collaborative</a></li>
+		      <li><a <?php if ($page=="news") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>connect/news.php">Navigator in the News</a></li>
+		      <li><a <?php if ($page=="calendar") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>connect/calendar.php">Training Calendar</a></li>
+		      <li><a <?php if ($page=="contact") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>connect/contact.php">Contact Us</a></li>
+		      <li><a <?php if ($page=="feedback") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>connect/feedback.php">Feedback</a></li>
+		      <li><a <?php if ($page=="submit") echo "class=\"bookmark\""; ?> href="<? echo($baseURL) ?>connect/submit.php">Submit Trainings</a></li>
+		    </ul>
+		  </li>
+		  <?php if ( $section == 'new home page' ) { ?>
+		  <li><a href="connect/news.php"><i style="font-size:1.25rem; top: 3px;" class="mch-newspaper-o"></i> News</a></li>
+		  <?php } ?>
+		  <li class="topl"><a href="<? echo($baseURL) ?>trainings/competencies.php">MCH Leadership Competencies</a></li>
+		  <li class="topl"><a href="<? echo($baseURL) ?>transformation/index.php">Health Transformation</a></li>
+		  <li class="topl"><a href="<? echo($baseURL) ?>trainings/search.php">Search</a></li>
+		</ul>
+</nav>

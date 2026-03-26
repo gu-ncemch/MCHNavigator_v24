@@ -1,0 +1,56 @@
+<?php 
+$section = 'trainings';
+$page = 'training';
+$page_title = "Trainings";
+include ('../../incl/header.html');
+?>
+<div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+<?php include('../../incl/leftnav.html'); ?>
+<div class="nine columns">
+<?php include('../../incl/title.html'); ?>
+<h2>MCH Academic Legacy Project</h2>
+	<p><a href="../evaluation-intro.php"></a><img src="../../images/mch-legacy.jpg" width="300" height="200" alt="Decorative image of story telling" class="right border" />This project documents the unique paths of MCH leaders in academe, focused on five key questions. The hope of this project is to preserve these experience and the wisdom from the field that each expert brings and also to inspire a new generation of MCH academics.</p>
+    
+	<p><strong>Eugene DeClercq</strong> combines formal training in political science with almost twenty years of experience as a certified childbirth educator to examine policy and practice related to childbirth in the US and abroad. His recent work in examining maternal mortality and morbidity in the US has emphasized the importance of systems approaches to improving women&rsquo;s health. This requires a focus on women&rsquo;s health in the community as well as in clinical settings and not only during pregnancy, but throughout the lifecourse. He is part of the collaborative team that has completed three national studies and a 2018 statewide study of women's experiences in childbirth entitled Listening to Mothers.</p>
+    
+	<div style="display: flex; flex-direction: column;" class="right">
+    <img src="../../images/Eugene-Declercq.jpg" alt="Eugene Declercq" class="ppic right" /></div>
+    
+	<p>Dr. DeClercq was principal investigator on two NIH funded collaborative projects examining child and maternal outcomes associated with Assisted Reproductive Technologies (MOSART project) and is one of the founders of the Pregnancy to Early Life Longitudinal (PELL) data system that has linked vital statistics, hospital, and administrative data on more than 1,100,000 births in Massachusetts since 1998. He has also been active in a variety of public health projects in his hometown of Lawrence, Massachusetts. As an educator, he is a past president of the Association of Teachers of Maternal and Child Health and has been a recipient of the Norman Scotch Award for outstanding teaching at BUSPH. He is also a recipient of the Martha May Eliot Award from the American Public Health Association for service to maternal and child health and the Greg Alexander award for research in maternal and child health epidemiology. He is currently the BUSPH Assistant Dean for DrPH Education.</p>
+    
+	<h2><a id="mchn"></a>Interview</h2>
+			<p>Click below to listen to Eugene DeClercq's story as he responds to five questions.</p>
+            <button class="accordion">1. Career to date and becoming a leader in an MCH training program</button>
+        <div class="panel">
+          <div class="vidwrap">
+            <iframe src="https://player.vimeo.com/video/339356296" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          </div>
+        </div>
+            <button class="accordion">2. Involvement with  state MCH/Title V programs and other critical MCH initiatives</button>
+        <div class="panel">
+          <div class="vidwrap">
+            <iframe src="https://player.vimeo.com/video/339356496" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          </div>
+        </div>
+            <button class="accordion">3. Challenges and concerns for academics</button>
+        <div class="panel">
+          <div class="vidwrap">
+           <iframe src="https://player.vimeo.com/video/339356532" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          </div>
+        </div>
+          <button class="accordion">4. Credits for your successes</button>
+        <div class="panel">
+          <div class="vidwrap">
+            <iframe src="https://player.vimeo.com/video/339356609" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          </div>
+    </div>
+           <button class="accordion">5. Tips for becoming a successful MCH Academic</button>
+        <div class="panel">
+          <div class="vidwrap">
+            <iframe src="https://player.vimeo.com/video/339356743" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          </div>
+    </div>
+</div>
+</div>
+
+<?php include('../../incl/footer.html'); ?>

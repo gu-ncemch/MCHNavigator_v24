@@ -1,0 +1,184 @@
+<div class="three columns">
+  <?php if(isset($section) && $section == "about"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="about") echo "class=\"bookmark\""; ?> href="/about">About</a></li>
+    <li><a <?php if ($page=="overview") echo "class=\"bookmark\""; ?> href="/about/overview.php">Overview &amp; Framework</a></li>
+    <li><a <?php if ($page=="screening") echo "class=\"bookmark\""; ?> href="/about/screening-process.php">Screening Process</a></li>
+    <li><a <?php if ($page=="team") echo "class=\"bookmark\""; ?> href="/about/team.php">Project Team &amp; Partners</a></li>
+  </ul>
+  <?php } ?>
+  <?php if(isset($section) && $section == "use"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="use") echo "class=\"bookmark\""; ?> href="/use">How to Use</a></li>
+    <li><a <?php if ($page=="ideas") echo "class=\"bookmark\""; ?> href="/use/ideas-and-examples.php">Ideas &amp; Examples for Use</a></li>
+    <li><a <?php if ($page=="brochures") echo "class=\"bookmark\""; ?> href="/use/brochures.php">Brochures for Sharing</a></li>
+  </ul>
+  <?php } ?>
+  <?php if(isset($section) && $section == "trainings"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="training") echo "class=\"bookmark\""; ?> href="/trainings">Trainings</a></li>
+    <li><a <?php if ($page=="find") echo "class=\"bookmark\""; ?> href="/trainings/search.php">Quick Finds &amp; Search</a></li>
+    <li><a <?php if ($page=="guided") echo "class=\"bookmark\""; ?> href="/trainings/guided-search.php">Guided Search</a></li>
+    <li><a <?php if ($page=="topics") echo "class=\"bookmark\""; ?> href="/trainings/topics.php">Learning Guides</a></li>
+    <ul style="border-bottom: 1px solid #f1f1f1; margin-bottom: 0;">
+      <li><a <?php if ($page=="core mch") echo "class=\"bookmark\""; ?> href="/trainings/core-mch-learning.php">Core MCH Learning</a></li>
+      <li><a <?php if ($page=="advanced learning") echo "class=\"bookmark\""; ?> href="/trainings/advanced-learning.php">Advanced Learning</a></li>
+      <li><a <?php if ($page=="translational learning") echo "class=\"bookmark\""; ?> href="/trainings/translational-learning.php">Translational Learning</a></li>
+    </ul>
+    <li><a <?php if ($page=="mch") echo "class=\"bookmark\""; ?> href="/trainings/competencies.php">MCH Leadership Competencies</a></li>
+    <li><a <?php if ($page=="publichealth") echo "class=\"bookmark\""; ?> href="/trainings/phcompetencies.php">Public Health Competencies</a></li>
+    <li><a <?php if ($page=="a-z") echo "class=\"bookmark\""; ?> href="/trainings/a-z.php">A-Z Trainings</a></li>
+    <li><a <?php if ($page=="new") echo "class=\"bookmark\""; ?> href="/trainings/new.php">New Trainings</a></li>
+    <li><a <?php if ($page=="help") echo "class=\"bookmark\""; ?> href="/trainings/help.php">Help</a></li>
+    <!--		<li><a <?php if ($page=="core mch") echo "class=\"bookmark\""; ?> href="/trainings/core-mch-learning.php">Core MCH Learning</a></li>
+		<li><a <?php if ($page=="advanced learning") echo "class=\"bookmark\""; ?> href="/trainings/advanced-learning.php">Advanced Learning</a></li>
+		<li><a <?php if ($page=="translational learning") echo "class=\"bookmark\""; ?> href="/trainings/translational-learning.php">Translational Learning</a></li>-->
+  </ul>
+   <?php } ?>
+  <?php if(isset($section) && $section == "comments"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="connect") echo "class=\"bookmark\""; ?> href="/connect/index.php">Connect</a></li>
+    <li><a <?php if ($page=="alert") echo "class=\"bookmark\""; ?> href="/connect/alert.php">MCH Alert</a></li>
+    <li><a <?php if ($page=="collaborative") echo "class=\"bookmark\""; ?> href="/connect/collaborative.php">Learning Collaborative</a></li>
+    <li><a <?php if ($page=="calendar") echo "class=\"bookmark\""; ?> href="/connect/calendar.php">Training Calendar</a></li>
+    <li><a <?php if ($page=="contact") echo "class=\"bookmark\""; ?> href="/connect/contact.php">Contact Us</a></li>
+    <li><a <?php if ($page=="feedback") echo "class=\"bookmark\""; ?> href="/connect/feedback.php">Feedback</a></li>
+    <li><a <?php if ($page=="submit") echo "class=\"bookmark\""; ?> href="/connect/submit.php">Submit Trainings</a></li>
+  </ul>
+  <?php } ?>
+  <?php if(isset($section) && $section == "resources"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="resource") echo "class=\"bookmark\""; ?> href="/resources">Resources</a></li>
+    <li><a <?php if ($page=="sites") echo "class=\"bookmark\""; ?> href="/resources/sites.php">Training Sites</a></li>
+    <li><a <?php if ($page=="programs") echo "class=\"bookmark\""; ?> href="/resources/programs.php">MCH Training Programs</a></li>
+    <li><a <?php if ($page=="links") echo "class=\"bookmark\""; ?> href="/resources/links.php">MCH Sites &amp; Links</a></li>
+  </ul>
+  <?php } ?>
+  <?php if(isset($section) && $section == "5min"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="microlearning") echo "class=\"bookmark\""; ?> href="/microlearning/index.php">Learning Programs</a></li>
+    <li><a <?php if ($page=="5min-overview") echo "class=\"bookmark\""; ?> href="/5min/index.php">5-Minute MCH Overview</a></li>
+    <li><a <?php if ($page=="modules") echo "class=\"bookmark\""; ?> href="/5min/modules.php">Module Menu</a>
+      <ul>
+        <li><a <?php if ($page=="comp1") echo "class=\"bookmark\""; ?> href="/5min/competency-1-0.php">1. MCH Knowledge Base/ Public Health Context</a></li>
+        <li><a <?php if ($page=="comp2") echo "class=\"bookmark\""; ?> href="/5min/competency-2-0.php">2. Self-Reflection</a></li>
+        <li><a <?php if ($page=="comp3") echo "class=\"bookmark\""; ?> href="/5min/competency-3-0.php">3. Ethics</a></li>
+        <li><a <?php if ($page=="comp4") echo "class=\"bookmark\""; ?> href="/5min/competency-4-0.php">4. Critical Thinking</a></li>
+        <li><a <?php if ($page=="comp5") echo "class=\"bookmark\""; ?> href="/5min/competency-5-0.php">5. Communication</a></li>
+        <li><a <?php if ($page=="comp6") echo "class=\"bookmark\""; ?> href="/5min/competency-6-0.php">6. Negotiation and Conflict Resolution</a></li>
+        <li><a <?php if ($page=="comp7") echo "class=\"bookmark\""; ?> href="/5min/competency-7-0.php">7. Cultural Competency</a></li>
+        <li><a <?php if ($page=="comp8") echo "class=\"bookmark\""; ?> href="/5min/competency-8-0.php">8. Family-Professional Partnerships</a></li>
+        <li><a <?php if ($page=="comp9") echo "class=\"bookmark\""; ?> href="/5min/competency-9-0.php">9. Teaching, Coaching and Mentoring</a></li>
+        <li><a <?php if ($page=="comp10") echo "class=\"bookmark\""; ?> href="/5min/competency-10-0.php">10. Interdisciplinary/ Interprofessional Team Building</a></li>
+        <li><a <?php if ($page=="comp11") echo "class=\"bookmark\""; ?> href="/5min/competency-11-0.php">11. Communities &amp; Systems</a></li>
+        <li><a <?php if ($page=="comp12") echo "class=\"bookmark\""; ?> href="/5min/competency-12-0.php">12. Policy</a></li>
+      </ul>
+    </li>
+  </ul>
+  <?php } ?>
+  <?php if(isset($section) && $section == "pronto"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="microlearning") echo "class=\"bookmark\""; ?> href="/microlearning/index.php">Learning Programs</a></li>
+    <li><a <?php if ($page=="5min-overview") echo "class=\"bookmark\""; ?> href="/pronto/index.php">Public Health Pronto Overview</a></li>
+    <li><a <?php if ($page=="modules") echo "class=\"bookmark\""; ?> href="/pronto/modules.php">Module Menu</a>
+      <ol>
+        <li><a <?php if ($page=="comp1") echo "class=\"bookmark\""; ?> href="/pronto/competency-1-0.php">Analytical &amp; Assessment Skills</a></li>
+        <li><a <?php if ($page=="comp2") echo "class=\"bookmark\""; ?> href="/pronto/competency-2-0.php">Policy Developmental &amp; Program Planning</a></li>
+        <li><a <?php if ($page=="comp3") echo "class=\"bookmark\""; ?> href="/pronto/competency-3-0.php">Communication Skills</a></li>
+        <li><a <?php if ($page=="comp4") echo "class=\"bookmark\""; ?> href="/pronto/competency-4-0.php">Cultural Competency</a></li>
+        <li><a <?php if ($page=="comp5") echo "class=\"bookmark\""; ?> href="/pronto/competency-5-0.php">Community Dimensions of Practice Skills</a></li>
+        <li><a <?php if ($page=="comp6") echo "class=\"bookmark\""; ?> href="/pronto/competency-6-0.php">Public Health Sciences Skill</a></li>
+        <li><a <?php if ($page=="comp7") echo "class=\"bookmark\""; ?> href="/pronto/competency-7-0.php">Financial Planning &amp; Management Skills</a></li>
+        <li><a <?php if ($page=="comp8") echo "class=\"bookmark\""; ?> href="/pronto/competency-8-0.php">Leadership &amp; Systems Thinking Skills</a></li>
+        <li><a <?php if ($page=="comp9") echo "class=\"bookmark\""; ?> href="/pronto/competency-9-0.php">Systems Integration</a></li>
+        <li><a <?php if ($page=="comp10") echo "class=\"bookmark\""; ?> href="/pronto/competency-10-0.php">Change Management &amp; Adaptive Leadership</a></li>
+        <li><a <?php if ($page=="comp11") echo "class=\"bookmark\""; ?> href="/pronto/competency-11-0.php">Evidence-Based Decision Making</a></li>
+        <li><a <?php if ($page=="comp12") echo "class=\"bookmark\""; ?> href="/pronto/competency-12-0.php">Public Health Through an MCH Lens</a></li>
+      </ol>
+    </li>
+  </ul>
+  <?php } ?>
+  <?php if(isset($section) && $section == "assessment"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="assess") echo "class=\"bookmark\""; ?> href="/assessment">Self-Assessment</a></li>
+    <li><a <?php if ($page=="main") echo "class=\"bookmark\""; ?> href="/assessment/menu.php">Main Menu</a></li>
+    <li><a <?php if ($page=="competency") echo "class=\"bookmark\""; ?> href="/assessment/v4/competency_01.php">Full Assessment</a></li>
+    <li><a <?php if ($page=="individual") echo "class=\"bookmark\""; ?> href="/assessment/v4/individual-assessments.php">Individual Assessments</a></li>
+    <li><a <?php if ($page=="personal") echo "class=\"bookmark\""; ?> href="/assessment/v4/learning-plan.php">Personalized Learning Plan</a></li>
+    <li><a <?php if ($page=="reports") echo "class=\"bookmark\""; ?> href="/assessment/reports.php">Group Customized Reports</a></li>
+  </ul>
+  <?php } ?>
+  <?php if(isset($section) && $section == "transformation"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="home") echo "class=\"bookmark\""; ?> href="/transformation">Health Transformation</a></li>
+    <li><a <?php if ($page=="mchwork") echo "class=\"bookmark\""; ?> href="/transformation/mchwork/index.php">MCHwork</a></li>
+    <li><a <?php if ($page=="a-z") echo "class=\"bookmark\""; ?> href="/transformation/resources-alpha.php">All Resources</a></li>
+    <li><a <?php if ($page=="a-z") echo "class=\"bookmark\""; ?> href="/transformation/npm.php">Title V Transformation Tools</a></li>
+    <li><a <?php if ($page=="core") echo "class=\"bookmark\""; ?> href="#">Core Focus Areas</a>
+      <ul>
+        <li><a <?php if ($page=="change") echo "class=\"bookmark\""; ?> href="/transformation/change-management.php">Change Management &amp; Adaptive Leadership</a></li>
+        <li><a <?php if ($page=="evidence") echo "class=\"bookmark\""; ?> href="/transformation/evidence.php">Evidence-Based Decision Making</a></li>
+        <li><a <?php if ($page=="systems") echo "class=\"bookmark\""; ?> href="/transformation/systems-integration.php">Systems Integration</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Cross-Cutting Themes</a>
+      <ul>
+         <li><a <?php if ($page=="access") echo "class=\"bookmark\""; ?> href="/transformation/access-to-care.php">Access to Care</a></li>
+         <li><a <?php if ($page=="equity") echo "class=\"bookmark\""; ?> href="/transformation/health-equity.php">Equity and Engagement with PWLE</a></li>
+         <li><a <?php if ($page=="family") echo "class=\"bookmark\""; ?> href="/transformation/family-engagement.php">Family Engagement</a></li>
+        <li><a <?php if ($page=="quality") echo "class=\"bookmark\""; ?> href="/transformation/quality-improvement.php">Quality Improvement</a></li>
+      </ul>
+    </li>
+    <li><a <?php if ($page=="contact") echo "class=\"bookmark\""; ?> href="/transformation/contact.php">Contact &amp; Technical Assistance</a></li>
+    <li><a <?php if ($page=="feedback") echo "class=\"bookmark\""; ?> href="/transformation/feedback.php">Feedback</a></li>
+    <li><a <?php if ($page=="pipeline") echo "class=\"bookmark\""; ?> href="/transformation/pipeline-program.php">Pipeline Program</a></li>
+  </ul>
+  <?php } ?>
+  <?php if(isset($section) && $section == "micro"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="microlearning") echo "class=\"bookmark\""; ?> href="/microlearning">Learning Programs</a></li>
+    <li><a <?php if ($page=="mchwork") echo "class=\"bookmark\""; ?> href="/transformation/mchwork">MCHwork</a></li>
+    <li><a <?php if ($page=="mchsmart") echo "class=\"bookmark\""; ?> href="/smart">MCHsmart</a></li>
+    <li><a <?php if ($page=="2020-intro") echo "class=\"bookmark\""; ?> href="/microlearning/mch-2020-intro.php">MCH 20|20</a></li>
+    <li><a <?php if ($page=="5min-pointer") echo "class=\"bookmark\""; ?> href="/5min">5-Minute MCH</a></li>
+    <li><a <?php if ($page=="pronto") echo "class=\"bookmark\""; ?> href="/pronto">Public Health Pronto</a></li>
+  </ul>
+  <?php } ?>
+  <?php if(isset($section) && $section == "academics"){ ?>
+  <ul class="leftnav">
+    <li><a <?php if ($page=="home") echo "class=\"bookmark\""; ?> href="/academics">Advancing Academics</a></li>
+    <li><a <?php if ($page=="atmch") echo "class=\"bookmark\""; ?> href="/academics/atmch/index.php">ATMCH</a></li>
+    <li><a <?php if ($page=="atmch") echo "class=\"bookmark\""; ?> href="/academics/atmch/innovative-teaching-awards/mch-cell.php">Community-Based Learning: MCH CELL</a></li>
+    <li><a <?php if ($page=="guided") echo "class=\"bookmark\""; ?> href="https://www.mchnavigator.org/trainings/guided-search.php">Guided Search</a></li>
+    <li><a <?php if ($page=="legacy") echo "class=\"bookmark\""; ?> href="/trainings/mch-legacy">MCH Public Health Academic Journey: From PhD to Legacy</a></li>
+  </ul>
+  <?php } ?>
+     <?php if(isset($section) && $section == "pwle-2"){ ?>
+  <ul class="leftnav">
+	    <li><a <?php if ($page=="pwle landing") echo "class=\"bookmark\""; ?> href="/trainings/pwle">PWLE Home Page</a></li>
+	
+    <li><a <?php if ($page=="definitions") echo "class=\"bookmark\""; ?> href="/trainings/pwle/definitions.php">1. Definitions</a></li>
+    <li><a <?php if ($page=="shared understanding") echo "class=\"bookmark\""; ?> href="/trainings/pwle/shared-understanding.php">2. Shared Understanding</a></li>
+    <li><a <?php if ($page=="organizational readiness") echo "class=\"bookmark\""; ?> href="/trainings/pwle/organizational-readiness.php">3. Organizational Readiness</a></li>
+    <li><a <?php if ($page=="identify who") echo "class=\"bookmark\""; ?> href="/trainings/pwle/identify-who.php">4. Identify Who</a></li>
+	
+	 <li><a <?php if ($page=="consider culture") echo "class=\"bookmark\""; ?> href="/trainings/pwle/consider-culture.php">5. Consider Culture</a></li>
+    <li><a <?php if ($page=="discover diversity") echo "class=\"bookmark\""; ?> href="/trainings/pwle/discover-diversity.php">6. Discover Diversity</a></li>
+    <li><a <?php if ($page=="your ask") echo "class=\"bookmark\""; ?> href="/trainings/pwle/your-ask.php">7. Your Ask</a></li>
+    <li><a <?php if ($page=="relationship") echo "class=\"bookmark\""; ?> href="/trainings/pwle/relationship.php">8. Relationship</a></li>
+	
+	 <li><a <?php if ($page=="when") echo "class=\"bookmark\""; ?> href="/trainings/pwle/when.php">9. When</a></li>
+    <li><a <?php if ($page=="effective connections") echo "class=\"bookmark\""; ?> href="/trainings/pwle/effective-connections.php">10. Effective Connections</a></li>
+    <li><a <?php if ($page=="self determination") echo "class=\"bookmark\""; ?> href="/trainings/pwle/self-determination.php">11. Self Determination</a></li>
+    <li><a <?php if ($page=="support") echo "class=\"bookmark\""; ?> href="/trainings/pwle/support.php">12. Support</a></li>
+	
+	 <li><a <?php if ($page=="strengths & assets") echo "class=\"bookmark\""; ?> href="/trainings/pwle/strengths-and-assets.php">13. Strengths & Assets</a></li>
+    <li><a <?php if ($page=="trust") echo "class=\"bookmark\""; ?> href="/trainings/pwle/trust.php">14. Trust</a></li>
+    <li><a <?php if ($page=="collaborative process") echo "class=\"bookmark\""; ?> href="/trainings/pwle/collaborative-process.php">15. Collaborative Process</a></li>
+    <li><a <?php if ($page=="commitment") echo "class=\"bookmark\""; ?> href="/trainings/pwle/commitment.php">16. Commitment</a></li>
+	    <li><a <?php if ($page=="sustain engagement") echo "class=\"bookmark\""; ?> href="/trainings/pwle/sustain-engagement.php">17. Sustain Engagement</a></li>
+
+	
+  </ul>
+  <?php } ?>
+</div>

@@ -1,0 +1,262 @@
+<?php
+$section = 'trainings';
+$page = 'training';
+$page_title = "Trainings";
+include( '../incl/header.html' );
+?>
+<div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+  <?php include('../incl/leftnav.html'); ?>
+  <div class="nine columns">
+    <?php include('../incl/title.html'); ?>
+    <h2>MCH Oral Histories</h2>
+    <p><img src="../images/mch-legacy.jpg" width="500" height="300" alt="Decorative image of story telling" class="right border" /></p>
+    <p>The following videos present oral histories of  Maternal and Child Health. They were conducted in 2007 and until 2020 we housed on HRSA's Maternal and Child Health Bureau's website. The MCH Navigator is pleased to be able to preserve them as part of the National Center for Education in Maternal and Child Health's ongoing <a href="https://www.mchlibrary.org/collections/history/index.php">MCH History</a> project.</p>
+    <ul>
+      <li><a href="#blockgrant">The MCH Block Grant: Past, Present and Future</a></li>
+      <li><a href="#title5">Title V: The Evolution of Family Partnership</a></li>
+      
+      <li><a href="#helen">Dr. Helen Wallace, Pediatrician and Champion of MCH in Schools of Public Health</a></li>
+      <li><a href="#interviewees">Interviewees</a></li>
+    </ul>
+    <a name="blockgrant" id="blockgrant"></a>
+    <h2>The MCH Block Grant: Past, Present and Future</h2>
+    <p>At the time of these interviews in 2007, Dr. van Dyck was Associate Administrator for the Health Resources and Services Administration&rsquo;s (HRSA) Maternal and Child Health Bureau (MCHB), Dr. Guyer was Zanvyl Kreiger Professor of Children's Health at Johns Hopkins University School of Public Health, and Dr. Hollinshead was Medical Director - Family Health at the Rhode Island Department of Health. Dr. Judson Force was also invited to participate in the interview but fell ill the day of the interview. He shares his written reflections.</p>
+    <button class="accordion">The Years Before the Block Grant</button>
+    <div class="panel">
+      <div class="vidwrap">
+        <iframe src="https://player.vimeo.com/video/534175260" width="640" height="564" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">Winds of Change: 1981 MCH Directors Meeting</button>
+    <div class="panel">
+      <div class="vidwrap">
+        <iframe src="https://player.vimeo.com/video/534178809" width="640" height="564" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">The Early Years of the Block Grant</button>
+    <div class="panel">
+      <div class="vidwrap">
+        <iframe src="https://player.vimeo.com/video/534178879" width="640" height="564" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">The Political Environment</button>
+    <div class="panel">
+      <div class="vidwrap">
+        <iframe src="https://player.vimeo.com/video/534178948" width="640" height="564" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">The Present and Future</button>
+    <div class="panel">
+     <iframe src="https://player.vimeo.com/video/534178948" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">"Reflections" by Judson Force, MD, MPH</button>
+    <div class="panel">
+      <p><strong>Judson Force, MD, MPH<br/>
+        MCH Director of Maryland in 1981 </strong></p>
+      <p> Responses to Questions regarding OBRA  1981<br/>
+        Personal Communication with Laura  Kavanagh via email, February 14, 2007</p>
+      <ol>
+        <li> <strong>Discuss the context for this change in policy.&nbsp; Who were the major players that initiated this change and what was the rationale presented for makingthis change?</strong>
+          <p>The context was that the economy  was not doing well. Inflation was at 10 to12 percent. Money was tight and  interest rates were in the 15 to 20 percent range. The new Republican  administration came into office with a design to improve the economy through supply  side economics by reducing federal taxes. Much of the offset in reduction of  federal revenues was to be met by decreases in federal spending on  discretionary programs. Unlike Title XVIII and XIX, Title V was one of well  over 100 discretionary funded programs that were targeted for possible budget  reduction or elimination.</p>
+          <p> The Association of MCH Directors  was advised in early Spring of 1981 at the annual MCH Directors meeting in San    Diego that TitleV was likely to be defunded. The  meeting was being conducted jointly with the Association of Teachers of MCH who  were then and continued to be extremely important in providing assistance with  efforts to preserve Title V. At this time there was no mention by the  Administration or our Associations of creating a block grant. Our priority and  focus at this time was on preserving Title V, as then enacted. </p>
+        </li>
+        <li> <strong>Describe how the Title V directors prepared for this change. What were your priorities to discuss with the MCH state level leadership? What &ldquo;game plan&rdquo; did you devise?</strong>
+          <p>The game plan was to first of all  get organized to meet the challenge. The Association up to then was a very  loosely organized collegial group of physician directors. The group met  annually for educational purposes and to learn from the federal MCH Bureau what the national  priorities would be for the next year. It became clear that if Title V had a chance of surviving much help would  be needed from Congress and the Title V  oversight committees - Ways and Means in the House and Finance in the Senate.</p>
+          <p>The major player in the Association  to get us underway was John McQueen, who directed the Title V Crippled  Children&rsquo;s Program (CSHCN) in Iowa.  The program in that state is administered through the University   of Iowa. Through John&rsquo;s effort we were introduced to Josie Gittler, a faculty member at the University&rsquo;s Law School, who had recently worked in Washington  as a staffer on the Hill and was a &nbsp;&nbsp;real  advocate for MCH. These two persons were instrumental in establishing the first  national office for the Association that became the locus of our legislative &nbsp;&nbsp;operational activities. Building a national  Title V MCH consortium was also a needed undertaking in preparing for the change.</p>
+          <p> A major issue for the Association  was funding to support operational needs. Income for the Association consisted of annual membership dues paid by each director. A first order of  business was to develop and implement a revised dues structure that could  generate the income needed for defending and promoting Title V. &nbsp;Increased funds became available through  establishing State Title V memberships with higher dues to replace the  individual membership structure. </p>
+        </li>
+        <li> <strong>Why was a block grant chosen as afunding mechanism by policymakers?&nbsp;What were the benefits and potential concerns about a blockgrant?&nbsp; </strong>
+          <p>The creation of block grants was a  compromise position acceptable to Congress and the Administration&rsquo;s Office of  Management and Budget (OMB) Director David Stockman, the President&rsquo;s budget  expert, during conferencing on the 1982 budget bills. Initially, OMB had targeted  a large number of programs for elimination. Title V MCH and most of the  programs that eventually became part of the MCH Block Grant were on that list.</p>
+          <p>Block grants were seen by Congress,  to some extent, as the means to preserve programs serving national needs. OMB may  have accepted block grants as a more expedient method to eventually zero out funding  and thereby achieve projected expenditure savings in the out years. Block  grants were also appreciated by many state officials as they would allow the  state much greater flexibility in the use of grant funds.</p>
+          <p>Prior to the OMB decision to drop  the effort to eliminate individual programs from the President&rsquo;s 1982 budget,  considerable time and effort was expended by State Title V Directors in meeting  with their Congressional members. Much work on their part was required in providing  up-to-date information to these members on the importance of MCH activities in  their states and the impact on direct service losses to their vulnerable  constituencies with the elimination of Title V and MCH funds. Major work on the  Hill with committee staff was undertaken by Peter Edelman, a colleague of Josie  Gittler, who was extremely helpful in promoting the national importance of Title  V activities. Also the efforts of Herb Cohen and University Affiliated  Facilities (UAF&rsquo;s), Don Cornely and Association of Teachers of Maternal and  Child Health (ATMCH), and Jackie Noyes and the American   Academy of Pediatrics (AAP) Washington  office were critical to our success. These efforts were coordinated by the  newly established national Association office and a revamped MCH Directors Executive  (Political) Action Committee.</p>
+          <p> The agreement by the Executive  Committee to accept changes in the Title V law and become a Block Grant was seen  as a positive for the most part. It would assure continuation of state Title V  support, the continued presence of the federal MCH Bureau, and preserve those  categorical programs that would become part of the Block Grant. The most  significant negative, and not fully appreciated at the time, was the loss of  federal regulations and an efficacious working relationship that had been  established between states and the federal office. </p>
+        </li>
+        <li> <strong>What was the legacy of that moment intime for today?</strong>
+          <p>Perhaps the greatest outcome for  Title V and its constituency was the creation of&nbsp; a Washington  based organization, the Association of MCH Programs (AMCHP) to succeed the  association of state Title V directors. Certainly, this development did much to  broaden the network and base for involvement with many others serving the Title  V target populations. The crisis faced by the Title V community also led to a  greater recognition of the importance of quantifiable, results oriented  information about Title V mission accomplishments. Subsequently, much help has  been provided to states by the MCH Bureau and development of an enhanced data  collection system. In Maryland,  and most likely in some other states, we now have state regulations that were  needed to replace federal authorizing regulations.</p>
+        </li>
+      </ol>
+    </div>
+    <hr />
+    <a name="title5" id="title5"></a>
+    <h2>Title V: The Evolution of Family Partnership</h2>
+    <p>In 1979, the Maternal and Child Health Bureau (MCHB) determined, in response to feedback from families and providers, that the Title V Crippled Children's Programs needed to correct a missing piece of the program - meaningful involvement and support of families. MCHB&rsquo;s Habilitative Services Branch (now the Division of Services for Children with Special Health Needs), under the leadership of Merle G. McPherson, MD, and with input from families with children with special health care needs and other stakeholders, made a conscious effort to identify and address family issues and service needs.</p>
+    <p>The videos below are meant to share the history of the "revolutionary" idea to include meaningful partnership with families in program and policy development, as described by Dr. McPherson and some of the early family leaders who helped shape the new direction of Title V's Children with Special Health Needs Programs. The program name change highlights how MCHB partnered with and listened to families served. Discretionary grant programs and Title V MCH Block Grant Program efforts began to include family/ professional collaboration within the context of family-centered, culturally-competent care. This effort promoted collaborative relationships, not only to improve the quality of life and health of an individual child and family, but also to improve community-based systems of care through policy formulation and program implementation.</p>
+      
+    <button class="accordion"> MCHB Development of Title V Crippled Children's Program</button>
+    <div class="panel">
+      <iframe src="https://player.vimeo.com/video/534435811" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">Personal Stories</button>
+    <div class="panel">
+      <iframe src="https://player.vimeo.com/video/534435844" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">MCHB Pioneers</button>
+    <div class="panel">
+      <iframe src="https://player.vimeo.com/video/534435949" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">Title V Improvements</button>
+    <div class="panel">
+      <iframe src="https://player.vimeo.com/video/534436153" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">Family Voices</button>
+    <div class="panel">
+      <iframe src="https://player.vimeo.com/video/534436245" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <p>&nbsp;</p>
+    </div>
+    <button class="accordion">Emerging Issues</button>
+    <div class="panel">
+      <iframe src="https://player.vimeo.com/video/534436309" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <p>&nbsp;</p>
+    </div>
+    <hr />
+    <p><a name="helen" id="helen"></a> </p>
+    <h2>Dr. Helen Wallace, Pediatrician and Champion of MCH in Schools of Public Health</h2>
+    <p>These interviews reflect Dr. Helen Wallace's thoughts on MCH History, the role of the MCH Training Program in Schools of Public Health, the importance of mentoring, global health and MCH, and the future of MCH.</p>
+    <button class="accordion"> Biography</button>
+    <div class="panel">
+      <p>Trained in pediatrics and public health, Dr. Helen Wallace began her career in the early 1950s as the Chief of the Maternity and Newborn Division, Department of Health of the City of New York. By the late 1950s, she joined the faculty at the School of Public Health at the University of Minnesota. Dubbed the &quot;matriarch of Maternal and Child Health (MCH) programs&quot; in schools of public health, Dr. Wallace spent 3 years, from 1956-1959 at the University of Minnesota, establishing an MCH presence in the school. From the 1960s to the 1980s, Dr. Wallace was the chair of the MCH Department at the University of California, Berkeley. She was a teacher, active mentor, and researcher, and published extensively.</p>
+      <p>In 1978, Dr. Wallace received the Martha May Eliot Award from the American Public Health Association (APHA), for &quot;exceptional health services to mothers and children.&quot; The award is named for Martha May Eliot (1891-1978), who is best known for her work -- spanning four decades -- in the federal Children's Bureau (Chief of Children's Bureau from 1951-56).</p>
+      <p>Upon &quot;retiring&quot; from the University of California at Berkeley in 1980, Dr. Wallace was recruited to head the Maternal and Child Health Department at San Diego State University. Dr. Wallace has mentored many in the field of maternal and child health. </p>
+      <button class="accordion"> Dr. Wallace's Education</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534864975" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <br />
+        <br />
+      </div>
+      <button class="accordion"> Dr. Wallace's Public Health Experience</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534864974" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <br />
+        <br />
+      </div>
+    </div>
+    <button class="accordion"> MCH History</button>
+    <div class="panel">
+      <button class="accordion"> Impact of Great Depression on MCH</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534864991" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion"> Children with Special Health Caer Needs</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534865006" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion"> Dr. Martha May Eliot</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534865028" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion"> Federal Children's Bureau</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534865046" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+    <button class="accordion"> MCH Training Program</button>
+    <div class="panel">
+      <button class="accordion"> UC Berkeley School of Public Health</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534868216" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion"> Importance of Practical Experiences</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534868243" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion"> Philosophy about MCH Training</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534868258" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion"> San Diego State University SPH</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534868273" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+    <button class="accordion"> Mentoring</button>
+    <div class="panel">
+      <button class="accordion">Dr. Wallace's Mentor</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534868293" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion">Dr. Baumgartner</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534868317" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion">Mentoring</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534868965" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+    <button class="accordion"> Global Health</button>
+    <div class="panel">
+      <button class="accordion">US/World Comparisons</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534868979" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion">HIV/AIDS</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534868991" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+    <button class="accordion"> Future of Maternal and Child Health</button>
+    <div class="panel">
+      <button class="accordion">Lessons from the Children's Bureau</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534869005" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion">Role of MCH Leaders</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534869025" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+      <button class="accordion">Vision for the Future of MCH</button>
+      <div class="panel">
+        <iframe src="https://player.vimeo.com/video/534869038" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="allowfullscreen"></iframe>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+    <hr />
+<p><a name="interviewees" id="interview"></a>
+</p>
+    <button class="accordion">Interviewees</button>
+    <div class="panel"></a>
+      <h3>Interviewees</h3>
+      <p><strong>Merle McPherson, MD, MPH </strong></p>
+      <p>Dr. Merle McPherson  received her medical degree from the University of Saskatchewan and an MPH from  Johns Hopkins University. She is a Fellow of the American Academy of Preventive  Medicine and an Honorary Fellow of the American Academy of Pediatrics. A  national and international leader in the development of comprehensive,  community-based service systems for children with special health care needs, Dr. McPherson retired from a long and distinguished  federal career as Director of MCHB&rsquo;s Division of Services for Children with Special Health Needs  (DSCSHN), a  position she held from 1987 to 2007. Additionally, Dr. McPherson has held leadership positions  in developmental disabilities and children&rsquo;s health with the Hawaii and Maryland Departments of Health.  While serving as the director of DSCSHN, Dr. McPherson was awarded the  Presidential Rank of Distinguished Executive, the highest award a federal  senior executive can receive. Dr. McPherson was recognized for her pioneering  work in establishing the medical home, a collaboration among primary care  providers, specialists, and children and youth with special health care needs  and their families to ensure access to culturally-competent, family-centered and  comprehensive health care. Medical homes have dramatically improved systems of care for children and  youth with chronic illness and disabilities. Dr. McPherson also led the effort  to develop a comprehensive and nationally accepted definition of children with  special health care needs. Under her command, her office embarked on a 10-year  action plan on improving services for children and youth with special health  care needs to help them live happy and productive lives.</p>
+      <p> <strong>Julie Beckett </strong> </p>
+      <p>Julie Beckett has been a tireless advocate for what are now commonly known across the country as Medicaid Home and Community-Based Services (HCBS) Waivers. Julie’s work with HCBS Waivers began when she wanted to bring her daughter, Katie, home from the hospital. Medical costs related to Katie’s care had exceeded her family’s health insurance policy. Medicaid began paying for hospital services, but would not permit Katie to leave the hospital and continue to receive care without filing a complicated Medicaid document called an exception to policy. Congressman Tauke turned to the White House for help after the Department of Health and Human Services (DHHS) denied the Becketts' request for an exception to policy. As a result, President Reagan and Vice President Bush agreed with Katie’s physicians and her family that it made sense for Katie to come home and ordered DHHS to find a way to resolve this issue. The Katie Beckett Medicaid waiver allows families to care for their children in their homes and communities rather than in hospitals or institutions. Julie Beckett is one of three founding members (Polly Arango, Julie Beckett, and Josie Woll) of Family Voices, a national grassroots network of families and friends speaking on behalf of children with special health care needs. At the time of this interview in 2007, Julie served as Director of National Policy, Family Voices, Inc.</p>
+      <p> <strong>Betsy Anderson </strong> </p>
+      <p>Betsy Anderson is the parent of three adult children. Her oldest son was born with spina bifida. At the time of the interview in 2007, she worked for Family Voices in Boston as Director of the Family Voices IMPACT Project, funded by MCHB’s Division of Child, Adolescent and Family Health at the Maternal and Child Health Bureau. She has long been interested in family-professional collaboration and has served on numerous national, state, and local committees and task forces, such as the NIH Human Genome Project, Ethical, Legal and Social Issues (ELSI) Working Group and the Congressional Task Force on Technology Dependent Children. Betsy has written materials and articles appearing in both family literature and professional journals and has been active regionally and nationally in areas relating to: Bright Futures, health care reform, genetics programs, Title V and employment of families in Title V, ethics, special education and families of children with special health needs. Awards include: Directors Award, Maternal and Child Health Bureau, HRSA, HHS; Senator Lloyd Bentsen Award for Family Centered Care; Allen Crocker Award, New England Regional Genetics Group; Harvard Chair for Parent-Professional Collaboration, Children’s Hospital, Boston; and Pediatric Research Associate, Harvard Medical School.</p>
+      <p> <strong>Patricia Thomas </strong> </p>
+      <p>Patricia (Trish) Thomas is from the Pueblo of Laguna Indian Reservation in New Mexico. At the time of this interview in 2007, she lived on the reservation but had previously lived on the East and West coasts, in Central America, and in Europe. She has educated and advocated for many years on behalf of her children as well as other children who have special health care needs at the local, regional, national and international level with policy makers, the media, and health care and educational professionals. She has worked to bring a better understanding of the needs of families from diverse cultures to the forefront and a better understanding of the issues confronting rural and frontier families who have children and youth with special health care needs. At the time of this interview, Trish was the Partnership/Technical Assistance Coordinator for the Family Voices' National Center for Parent Professional Partnerships in Albuquerque, NM. She was also a training consultant to the National Center for Cultural Competency at Georgetown University Child Development Center in Washington, DC; served as Cultural Competency Consultant to the National Center on Youth Transition (Healthy and Ready to Work) Bangor, ME; and has had sat served on many boards, committees and task forces, such as the HRSA/MCHB (Health Resources and Services Administration/Maternal and Child Health Bureau) Federal Communication and Information Work Group; the Association of Maternal and Child Health Programs (AMCHP) conference planning committee Washington, DC; the National Indian Health Board, Tribal Summit for Youth Transition, Washington, DC; and the Mountain States Regional Genetics Consumer/Education, Denver, CO.</p>
+      <p> <strong>Barbara Popper</strong> </p>
+      <p> Barbara Popper, a former high school teacher, parent of four children and six grandsons was involved in parent advocacy since her second child was hospitalized as an infant at a time of restricted hospital visitation ,policies. She founded a volunteer parent organization, Children in Hospitals, Inc., to encourage liberalized family contact policies. She was the former director of the national Family Voices Family Matters Project, a research project with Tufts University School of Medicine focused on health and wellness for children with special needs, and the Federation for Children with Special Needs APPLE project assisting parents of children with special needs in developing their leadership skills in the education system. She is was a board certified lactation consultant with a particular interest in families whose babies have special health care needs. Barbara passed away in 2013. </p>
+      <p><strong>Helen Wallace, MD, MPH</strong></p>
+      <p>Dr. Wallace, who died in 2013 at the age of 99, mentored generations of students as a professor and chair of the University of California at Berkley's MCH program from 1962 to 1980. She laid important groundwork in the field by fostering collaboration across disciplines at a time when it was rare to do so, and she implemented these practices within the school, in research partnerships and in her writing. She was particularly interested in infant health, maternal mortality, health systems that improved health outcomes, and expanded delivery of health care to mothers and children. Dr. Wallace left a bequest valued at more than $13 million to UC Berkeley&rsquo;s School of Public Health. The funds  launched the Wallace Maternal and Child Health Center.<br>
+    </p>
+    </div>
+    <p>&nbsp;</p>
+    <hr>
+    <p>MCH Oral Histories. April 2021</p>
+  </div>
+</div>
+<?php include('../incl/footer.html'); ?>

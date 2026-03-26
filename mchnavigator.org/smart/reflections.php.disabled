@@ -1,0 +1,225 @@
+<?php
+include("account/cookie.php");
+include_once( "/home/dh_mch_sftp/globals/filemaker_init.php" );
+$fm = db_connect( "MCH-Navigator" );
+$record = $fm->getRecordById( 'MCH_Smart_Dashboard', $uID );
+
+
+$section = 'assessment';
+$page = 'Reflections';
+include ('incl/header.html');
+?>
+<div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+	<?php include('incl/nav_generic.html'); ?>
+
+	<div class="ten columns">
+		<div id="page_title"><img src="images/Dashboard-lightbulb-concept.jpg" alt="lightbulb and paper with pencil">
+		  <div class="v">
+		    <h1>Reflections</h1>
+		  </div>
+		</div>
+
+
+		<p><img src="images/MCHsmart-share.png" width="250" height="300" alt="MCHtalk logo" class="right border" />The final step of MCHsmart involves sharing  thoughts and insights you had as you progressed through the curriculum. <!--Which parts of the learning resonated with your experiences as an MCH professional/student? What new information offered a fresh take on a situation from your work/classroom life? What were you surprised you to learn was part of the MCH knowledge base?--></p>
+
+		<p>Take one of these moments of reflection and use it as inspiration to write share a little of your experience. By filling out the form below, we will add your comments on a specific subcompetency and share it as a post on <a href="https://www.ncemch.org/mchtalk/" target="_blank"><strong>MCHtalk</strong></a>, a new blog hosted by the MCHNavigator at the National Center for Education in Maternal and Child Health/Georgetown University. In this way, your experience will help inform future learners in this curriculum.</p>
+		<p>We ask that you choose one of the sub-competencies that you reviewed in the curriculum. Think about what you knew about the topic before you began the curriculum, what you have learned while taking the course, and what you want to learn next. </p>
+		<p>If you’d like to see examples of what others have written, <a href="https://www.ncemch.org/mchtalk/" target="_blank">you can view the blog here</a> (link opens in a new window/tab so you can see examples as you share your experience below).</p> 
+		
+		<p>Please submit any questions about this step of the curriculum to <a href="mailto:mchnavigator@ncemch.org">MCHnavigator@ncemch.org</a>.</p>
+
+		
+
+
+
+		<form method="post" action="https://www.ncemch.org/mchtalk/wp-content/themes/mchtalk/reflections-save.php">
+
+			<input id="email" name="email" type="hidden" value="<?php echo $record->getField('email'); ?>">
+
+			<p>
+				<label for="subcompetency">Choose a sub-competency to write about:</label>			
+				<span class="select">
+					<span class="arr"></span>
+					<select id="subcompetency" name="subcompetency">
+						<option value="" disabled selected>Choose a sub-competency</option>
+						<option value="1K1 - History & MCH structure">1K1 - History & MCH structure</option>
+						<option value="1K2 - Core values and strategic objectives">1K2 - Core values and strategic objectives</option>
+						<option value="1K3 - Services through MCH programs">1K3 - Services through MCH programs</option>
+						<option value="1K4 - Key policies that affect MCH populations">1K4 - Key policies that affect MCH populations</option>
+						<option value="1K5 - Underlying principles of public health data collection">1K5 - Underlying principles of public health data collection</option>
+						<option value="1K6 - Role of government in ensuring equitable healthcare">1K6 - Role of government in ensuring equitable healthcare</option>
+						<option value="1K7 - Population- and individual-focused program synergy">1K7 - Population- and individual-focused program synergy</option>
+						<option value="1S1 - Describe MCH populations and examples of programs">1S1 - Describe MCH populations and examples of programs</option>
+						<option value="1S2 - Describe systems approach">1S2 - Describe systems approach</option>
+						<option value="1S3 - Use data to identify issues">1S3 - Use data to identify issues</option>
+						<option value="1S4 - Address health disparities in MCH populations">1S4 - Address health disparities in MCH populations</option>
+						<option value="1S5 - Evaluate evidence-based programs and policies">1S5 - Evaluate evidence-based programs and policies</option>
+						<option value="1S6 - Partner with family/community organizations">1S6 - Partner with family/community organizations</option>
+						<option value="1S7 - Demonstrate systems approach">1S7 - Demonstrate systems approach</option>
+						<option value="1S8 - Assess effectiveness of existing programs">1S8 - Assess effectiveness of existing programs</option>
+						<option value="2K1 - Impact of self-assessment/reflection on leadership style">2K1 - Impact of self-assessment/reflection on leadership style</option>
+						<option value="2K2 - Characteristics of leadership styles">2K2 - Characteristics of leadership styles</option>
+						<option value="2K3 - Sources of reward vs. signs of stress/fatigue">2K3 - Sources of reward vs. signs of stress/fatigue</option>
+						<option value="2S1 - Recognize attitudes/beliefs influencing leadership">2S1 - Recognize attitudes/beliefs influencing leadership</option>
+						<option value="2S2 - Self-reflect to improve programs and outcomes">2S2 - Self-reflect to improve programs and outcomes</option>
+						<option value="2S3 - Identify a framework for feedback">2S3 - Identify a framework for feedback</option>
+						<option value="2S4 - Apply leadership style to promote team function">2S4 - Apply leadership style to promote team function</option>
+						<option value="3K1 - Professional ethical/legal principles, values, behaviors">3K1 - Professional ethical/legal principles, values, behaviors</option>
+						<option value="3K2 - Professional associations' code of ethics">3K2 - Professional associations' code of ethics</option>
+						<option value="3K3 - IRB processes and criteria">3K3 - IRB processes and criteria</option>
+						<option value="3S1 - Identify/address ethical issues in care/human subjects research">3S1 - Identify/address ethical issues in care/human subjects research</option>
+						<option value="3S2 - Identify ethical implications of health disparities">3S2 - Identify ethical implications of health disparities</option>
+						<option value="3S3 - Engage in problem solving with others">3S3 - Engage in problem solving with others</option>
+						<option value="3S4 - Discuss ethical dilemmas affecting MCH">3S4 - Discuss ethical dilemmas affecting MCH</option>
+						<option value="3S5 - Understand cultural values to deliver ethical policy">3S5 - Understand cultural values to deliver ethical policy</option>
+						<option value="4K1 - Cognitive hierarchy of critical thinking">4K1 - Cognitive hierarchy of critical thinking</option>
+						<option value="4K2 - Statistics, epidemiology, research">4K2 - Statistics, epidemiology, research</option>
+						<option value="4K3 - Evidence levels in professional organization guidelines">4K3 - Evidence levels in professional organization guidelines</option>
+						<option value="4S1 - Evaluate perspectives/sources to address challenges">4S1 - Evaluate perspectives/sources to address challenges</option>
+						<option value="4S2 - Use population data to determine needs">4S2 - Use population data to determine needs</option>
+						<option value="4S3 - Formulate practice/research/policy question">4S3 - Formulate practice/research/policy question</option>
+						<option value="4S4 - Demonstrate critical analysis of research">4S4 - Demonstrate critical analysis of research</option>
+						<option value="4S5 - Identify/implement promising practices/policies">4S5 - Identify/implement promising practices/policies</option>
+						<option value="4S6 - Present rationale for policies grounded in research">4S6 - Present rationale for policies grounded in research</option>
+						<option value="4S7 - Translate research into policy">4S7 - Translate research into policy</option>
+						<option value="4S8 - Develop/apply evidence-based practice guidelines">4S8 - Develop/apply evidence-based practice guidelines</option>
+						<option value="5K1 - Principles - verbal, written, nonverbal">5K1 - Principles - verbal, written, nonverbal</option>
+						<option value="5K2 - Communication challenges">5K2 - Communication challenges</option>
+						<option value="5S1 - Share/communicate with individuals/groups">5S1 - Share/communicate with individuals/groups</option>
+						<option value="5S2 - Write clearly, effectively, and with cultual/linguistic proficiency">5S2 - Write clearly, effectively, and with cultual/linguistic proficiency</option>
+						<option value="5S3 - Understand nonverbal cues">5S3 - Understand nonverbal cues</option>
+						<option value="5S4 - Listen actively">5S4 - Listen actively</option>
+						<option value="5S5 - Tailor information for audience">5S5 - Tailor information for audience</option>
+						<option value="5S6 - Comunicate effectively through presentations and writing">5S6 - Comunicate effectively through presentations and writing</option>
+						<option value="5S7 - Employ all communication skills">5S7 - Employ all communication skills</option>
+						<option value="5S8 - Summarize complex information for varied audiences">5S8 - Summarize complex information for varied audiences</option>
+						<option value="6K1 - Conflict in organizations">6K1 - Conflict in organizations</option>
+						<option value="6K2 - Sources of interdisciplinary conflict">6K2 - Sources of interdisciplinary conflict</option>
+						<option value="6K3 - Conflict management theories">6K3 - Conflict management theories</option>
+						<option value="6K4 - Group negotiation strategies">6K4 - Group negotiation strategies</option>
+						<option value="6K5 - Positive role of conflict">6K5 - Positive role of conflict</option>
+						<option value="6S1 - Maintain self-awareness of viewpoint, negotiation style">6S1 - Maintain self-awareness of viewpoint, negotiation style</option>
+						<option value="6S2 - Understand others' viewpoints/negotiation styles">6S2 - Understand others' viewpoints/negotiation styles</option>
+						<option value="6S3 - Apply/evaluate negotiation strategies">6S3 - Apply/evaluate negotiation strategies</option>
+						<option value="6S4 - Demonstrate conflict management">6S4 - Demonstrate conflict management</option>
+						<option value="6S5 - Navigate the ways culture shapes conflict">6S5 - Navigate the ways culture shapes conflict</option>
+						<option value="6S6 - Build consensus">6S6 - Build consensus</option>
+						<option value="7K1 - Influences of bias">7K1 - Influences of bias</option>
+						<option value="7K2 - Linguistic competence and health literacy">7K2 - Linguistic competence and health literacy</option>
+						<option value="7K3 - Demographic impacts on health">7K3 - Demographic impacts on health</option>
+						<option value="7K4 - Social/cultural factors on access to health care">7K4 - Social/cultural factors on access to health care</option>
+						<option value="7K5 - Impact of culturally competent health care practices">7K5 - Impact of culturally competent health care practices</option>
+						<option value="7S1 - Conduct self-assessments for cultural competence">7S1 - Conduct self-assessments for cultural competence</option>
+						<option value="7S2 - Assess community strengths/needs">7S2 - Assess community strengths/needs</option>
+						<option value="7S3 - Understand differences in perspective">7S3 - Understand differences in perspective</option>
+						<option value="7S4 - Modify systems to meet needs of groups">7S4 - Modify systems to meet needs of groups</option>
+						<option value="7S5 - Ensure culturally sensitive delivery systems">7S5 - Ensure culturally sensitive delivery systems</option>
+						<option value="7S6 - Integrate cultural competence into programs, etc.">7S6 - Integrate cultural competence into programs, etc.</option>
+						<option value="7S7 - Use data-driven tools for health equity">7S7 - Use data-driven tools for health equity</option>
+						<option value="8K1 - Definition of family-professional partnerships">8K1 - Definition of family-professional partnerships</option>
+						<option value="8K2 - Principles of family-centered care in MCH (e.g., Medical Home)">8K2 - Principles of family-centered care in MCH (e.g., Medical Home)</option>
+						<option value="8S1 - Solicit/use family input">8S1 - Solicit/use family input</option>
+						<option value="8S2 - Recognize importance of training and inclusion of families">8S2 - Recognize importance of training and inclusion of families</option>
+						<option value="8S3 - Demonstrate family-centered philosophical constructs">8S3 - Demonstrate family-centered philosophical constructs</option>
+						<option value="8S4 - Tailor recommendations to cultural family issues">8S4 - Tailor recommendations to cultural family issues</option>
+						<option value="8S5 - Celebrate individual/family diversity">8S5 - Celebrate individual/family diversity</option>
+						<option value="8S6 - Recognize organization/system-level policies impacting CYSHCN">8S6 - Recognize organization/system-level policies impacting CYSHCN</option>
+						<option value="8S7 - Establish relationships with family-led organizations">8S7 - Establish relationships with family-led organizations</option>
+						<option value="8S8 - Use feedback for quality improvement/monitoring">8S8 - Use feedback for quality improvement/monitoring</option>
+						<option value="8S9 - Include family and community perspectives">8S9 - Include family and community perspectives</option>
+						<option value="8S10 - Assist care professionals implementing FPP models">8S10 - Assist care professionals implementing FPP models</option>
+						<option value="8S11 - Incorporate home models of care into education">8S11 - Incorporate home models of care into education</option>
+						<option value="9K1 - Teaching strategies">9K1 - Teaching strategies</option>
+						<option value="9K2 - Coaching as a professional relationship">9K2 - Coaching as a professional relationship</option>
+						<option value="9K3 - Mentoring as personal, career-facilitating">9K3 - Mentoring as personal, career-facilitating</option>
+						<option value="9S1 - Use instructional technology tools">9S1 - Use instructional technology tools</option>
+						<option value="9S2 - Give/receive feedback on behaviors/performance">9S2 - Give/receive feedback on behaviors/performance</option>
+						<option value="9S3 - Cultivate active listening skills">9S3 - Cultivate active listening skills</option>
+						<option value="9S4 - Identify mentor-mentee relationships">9S4 - Identify mentor-mentee relationships</option>
+						<option value="9S5 - Set mentoring/coaching expectations and boundaries">9S5 - Set mentoring/coaching expectations and boundaries</option>
+						<option value="9S6 - Develop mentoring/coaching rapport">9S6 - Develop mentoring/coaching rapport</option>
+						<option value="9S7 - Incorporate evidence-based pedagogy">9S7 - Incorporate evidence-based pedagogy</option>
+						<option value="9S8 - Encourage active learning">9S8 - Encourage active learning</option>
+						<option value="9S9 - Facilitate learning in groups">9S9 - Facilitate learning in groups</option>
+						<option value="9S10 - Apply coaching/mentoring for professional advancement">9S10 - Apply coaching/mentoring for professional advancement</option>
+						<option value="9S11 - Faciliate opportunities for learners to serve as teachers">9S11 - Faciliate opportunities for learners to serve as teachers</option>
+						<option value="10K1 - MCH stakeholder roles">10K1 - MCH stakeholder roles</option>
+						<option value="10K2 - Team building concepts">10K2 - Team building concepts</option>
+						<option value="10S1 - Describe roles, responsibilities, and scope of practice">10S1 - Describe roles, responsibilities, and scope of practice</option>
+						<option value="10S2 - Seek diverse perspectives">10S2 - Seek diverse perspectives</option>
+						<option value="10S3 - Assemble team">10S3 - Assemble team</option>
+						<option value="10S4 - Facilitate group processes for team-based decisions">10S4 - Facilitate group processes for team-based decisions</option>
+						<option value="10S5 - Model curiosity/appreciation for individual contributions">10S5 - Model curiosity/appreciation for individual contributions</option>
+						<option value="10S6 - Identify and redirect negative influences on team">10S6 - Identify and redirect negative influences on team</option>
+						<option value="10S7 - Use shared outcomes to promote synergy">10S7 - Use shared outcomes to promote synergy</option>
+						<option value="10S8 - Share leadership">10S8 - Share leadership</option>
+						<option value="10S9 - Adopt interdisciplinary tools/techniques/methods">10S9 - Adopt interdisciplinary tools/techniques/methods</option>
+						<option value="10S10 - Use competencies and indisciplinary knowledge">10S10 - Use competencies and indisciplinary knowledge</option>
+						<option value="11K1 - How organizations or practice settings function as systems">11K1 - How organizations or practice settings function as systems</option>
+						<option value="11K2 - Principles and concepts related to broader systems">11K2 - Principles and concepts related to broader systems</option>
+						<option value="11S1 - Relate mission/vision/goals to broader systems">11S1 - Relate mission/vision/goals to broader systems</option>
+						<option value="11S2 - Budgeting/resources efficiency, standards control">11S2 - Budgeting/resources efficiency, standards control</option>
+						<option value="11S3 - Develop agendas/lead meetings">11S3 - Develop agendas/lead meetings</option>
+						<option value="11S4 - Identify stakeholders">11S4 - Identify stakeholders</option>
+						<option value="11S5 - Interpret situations systemically">11S5 - Interpret situations systemically</option>
+						<option value="11S6 - Assess environment for evidence-based strategies">11S6 - Assess environment for evidence-based strategies</option>
+						<option value="11S7 - Increase inclusion and accessibility">11S7 - Increase inclusion and accessibility</option>
+						<option value="11S8 - Manage projects effectively">11S8 - Manage projects effectively</option>
+						<option value="11S9 - Use implementation science">11S9 - Use implementation science</option>
+						<option value="11S10 - Develop proficiency in business/admin aspects of health care finance/policy">11S10 - Develop proficiency in business/admin aspects of health care finance/policy</option>
+						<option value="11S11 - Maintain strong stakeholder groups">11S11 - Maintain strong stakeholder groups</option>
+						<option value="11S12 - Build coalitions">11S12 - Build coalitions</option>
+						<option value="11S13 - Use community collaboration models">11S13 - Use community collaboration models</option>
+						<option value="12K1 - Public policy-making processes: local, state, national">12K1 - Public policy-making processes: local, state, national</option>
+						<option value="12K2 - Current public policies/private-sector initiatives">12K2 - Current public policies/private-sector initiatives</option>
+						<option value="12K3 - Methods for informing/educating policymakers">12K3 - Methods for informing/educating policymakers</option>
+						<option value="12K4 - Strategies for public communication">12K4 - Strategies for public communication</option>
+						<option value="12S1 - Frame problems based on data">12S1 - Frame problems based on data</option>
+						<option value="12S2 - Use data in proposing policy change">12S2 - Use data in proposing policy change</option>
+						<option value="12S3 - Distinguish roles and responsibilities of groups involved in public policy">12S3 - Distinguish roles and responsibilities of groups involved in public policy</option>
+						<option value="12S4 - Apply standards to evaluate alternative policies">12S4 - Apply standards to evaluate alternative policies</option>
+						<option value="12S5 - Analyze impact of policies on population groups">12S5 - Analyze impact of policies on population groups</option>
+						<option value="12S6 - Formulate strategies to balance stakeholder interests">12S6 - Formulate strategies to balance stakeholder interests</option>
+						<option value="12S7 - Present evidence to decision makers/the public">12S7 - Present evidence to decision makers/the public</option>
+						<option value="12S8 - Craft a convincing story to motivate constituents and policymakers">12S8 - Craft a convincing story to motivate constituents and policymakers</option>
+					</select>
+				</span>
+			</p>
+
+			<p>
+				<label for="impressions">First impressions of this sub-competency:</label>
+				<textarea id="impressions" name="impressions"></textarea>
+			</p>
+			
+			<p>
+				<label for="learned">What I didn't understand about this competency at first but now have learned:</label>
+				<textarea id="learned" name="learned"></textarea>
+			</p>
+			
+			<p>
+				<label for="need2learn">What I still need to learn about this sub-competency:</label>
+				<textarea id="need2learn" name="need2learn"></textarea>
+			</p>
+
+			<p>
+				<label for="yourname">Your Name</label>
+				<input id="yourname" name="yourname" type="text" placeholder="First Name" required value="<?php echo $record->getField('name_first') . ' ' . $record->getField('name_last'); ?>">
+			</p>
+
+			<p>
+				<label for="date">Today's Date</label>
+				<input id="date" name="date" type="text" readonly placeholder="Last Name" required value="<?php echo date("m-d-Y"); ?>">
+			</p>
+
+			<p><label for="permission"><input type="checkbox" id="permission" name="permission"> By checking this box, you give permission to post this to <a href="https://www.ncemch.org/mchtalk/">MCHtalk, the NCEMCH Blog</a>.</label></p>
+
+			<p><strong>Note: </strong>It takes approximately 15 seconds to submit this information to the blog; <em>please be patient.</em></p>
+
+		  <p><button type="submit" class="button orange">Submit for Review</button></p>
+		</form>
+
+
+	</div>
+</div>
+
+<?php include('incl/footer.html'); ?>
