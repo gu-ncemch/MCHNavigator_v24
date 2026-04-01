@@ -2,41 +2,45 @@
 
 include("../account/cookie.php");
 
-include_once(__DIR__ . "/../../../globals/filemaker_init.php");
-include_once(__DIR__ . "/../../../globals/scrubber.php");
+require_once __DIR__ . '/../../filemaker/data-api.php';
 
 
 // prep data ----------------------------------------------------------
 extract($_POST, EXTR_OVERWRITE);
 
-// give the data up to the data gods -------------------------------------------------------
-$fm      = db_connect("MCH-Navigator");
-
-$record = $fm->newAddCommand('SA_Responses_v45');
-$record->setField('uID', $uID);
-$record->setField('section', $section);
-$record->setField('notes', $notes);
-$responseCount = 0;
+$responseIDs = array();
+$responseTypes = array();
+$responseValues = array();
 foreach($_POST as $k => $v){
 	if($k != "section" && $k != "notes" && $k != "pathway"){
 		#prep work
 		$idBits = explode("-", $k);
 		$idBits[0] = str_replace("_",".",$idBits[0]);
-		#save it
-		$record->setField('responseID', $idBits[0], $responseCount);
-		$record->setField('responseType', $idBits[1], $responseCount);
-		$record->setField('response', $v, $responseCount);
-		#save it
-		// echo 'responseID ==> '.$idBits[0]." -- ";
-		// echo 'responseType ==> '.$idBits[1]." -- ";
-		// echo 'response ==> '.$v."<br>";
-		$responseCount++;
+		$responseIDs[] = $idBits[0];
+		$responseTypes[] = $idBits[1];
+		$responseValues[] = $v;
 	}
 }
-$result = $record->execute();
-if (FileMaker::isError($result)) {
+
+$request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'SA_Responses_v45',
+	'action' => 'create',
+	'parameters' => array(
+		'fieldData' => array(
+			'uID' => $uID,
+			'section' => $section,
+			'notes' => $notes,
+			'responseID' => $responseIDs,
+			'responseType' => $responseTypes,
+			'response' => $responseValues,
+		),
+	),
+);
+$result = do_filemaker_request($request, 'array');
+if ((int) ($result['messages'][0]['code'] ?? 500) !== 0) {
 	echo "error!";
-	echo $result->getMessage();
+	echo $result['messages'][0]['message'] ?? 'Unknown FileMaker error';
 }
 
 $zeroLead = $section < 9 ? "0" : "";

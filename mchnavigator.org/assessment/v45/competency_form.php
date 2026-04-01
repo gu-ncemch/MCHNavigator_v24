@@ -63,17 +63,39 @@ function back2menu() {
 	</table>
 
 
-	<?php
+<?php
 // get questions
-$request = $fm->newFindCommand('SA_Questions_v45');
-$request->addFindCriterion('section', "=".$section);
-$request->addSortRule('type', 1, FILEMAKER_SORT_ASCEND);
-$request->addSortRule('order', 2, FILEMAKER_SORT_ASCEND);
-$result = $request->execute();
-if (FileMaker::isError($result)) {
-	echo $result->getMessage();
+$request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'SA_Questions_v45',
+	'action' => 'find',
+	'parameters' => array(
+		'query' => array(
+			array(
+				'section' => '=' . (int) $section,
+			),
+		),
+		'sort' => array(
+			array(
+				'fieldName' => 'type',
+				'sortOrder' => 'ascend',
+			),
+			array(
+				'fieldName' => 'order',
+				'sortOrder' => 'ascend',
+			),
+		),
+		'limit' => 100,
+	),
+);
+$result = do_filemaker_request($request, 'array');
+$records = array();
+if ((int) ($result['messages'][0]['code'] ?? 500) !== 0) {
+	echo $result['messages'][0]['message'] ?? 'Error loading questions.';
 } else {
-	$records = $result->getRecords();
+	foreach ($result['response']['data'] as $row) {
+		$records[] = fm_record_shim($row);
+	}
 }
 // give the goods
 $secondSet = "Knowledge";

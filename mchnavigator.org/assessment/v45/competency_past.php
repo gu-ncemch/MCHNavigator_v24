@@ -23,14 +23,35 @@
 		return $word;
 	}}
 
+	if ( ! function_exists('fm_repeat_value')) {
+	function fm_repeat_value( $row, $field, $index ) {
+		$value = $row['fieldData'][$field] ?? '';
+		if ( is_array( $value ) ) {
+			return $value[$index] ?? '';
+		}
+		return $index === 0 ? $value : '';
+	}}
+
 	// get responses
-	$request = $fm->newFindCommand('SA_Responses_v45');
-	$request->addFindCriterion('rID', "=".$rID);
-	$result = $request->execute();
-	if (FileMaker::isError($result)) {
-		echo $result->getMessage();
+	$request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'SA_Responses_v45',
+		'action' => 'find',
+		'parameters' => array(
+			'query' => array(
+				array(
+					'rID' => '=' . scrubber($rID, 'string'),
+				),
+			),
+			'limit' => 10,
+		),
+	);
+	$result = do_filemaker_request($request, 'array');
+	$responses = array();
+	if ((int) ($result['messages'][0]['code'] ?? 500) !== 0) {
+		echo $result['messages'][0]['message'] ?? 'Error loading responses.';
 	} else {
-		$responses = $result->getRecords();
+		$responses = $result['response']['data'];
 	}
 	$userResponses = array();
 	// print_r($responses);
@@ -39,13 +60,15 @@
 		$sub_ks = 0;
 		$sub_c = 0;
 		for($i = 0; $i <= 30; $i++){
-			if($response->getField('responseID', $i) != ""){
-				// echo '#'.$i." ".$response->getField('responseID', $i).'@'.$response->getField('responseType', $i).'='.$response->getField('response', $i).'<br>';
-				$userResponses[$response->getField('responseID', $i)] = $response->getField('response', $i);
-				if($response->getField('responseType', $i) == "I"){
-					$sub_i += $response->getField('response', $i);
+			if(fm_repeat_value($response, 'responseID', $i) != ""){
+				$responseId = fm_repeat_value($response, 'responseID', $i);
+				$responseType = fm_repeat_value($response, 'responseType', $i);
+				$responseValue = fm_repeat_value($response, 'response', $i);
+				$userResponses[$responseId] = $responseValue;
+				if($responseType == "I"){
+					$sub_i += $responseValue;
 				} else {
-					$sub_ks += $response->getField('response', $i);
+					$sub_ks += $responseValue;
 					$sub_c++;
 				}
 			}
@@ -203,7 +226,7 @@ switch ( $section ) {
 	<p style="margin-top:2.5rem;"><strong class="red-text"><i class="icon mch-anchor" aria-hidden="true"></i> SET: Dig Deeper.</strong> Based on your results, below are your knowledge levels by sub-competency. <strong>Click on the sub-competencies below to view curated trainings that match your reported learning needs.</strong></p>
 	<?php } ?>
 
-	<p><small>The results below were recorded on <?php echo date('l F jS, Y \a\t g:ia',strtotime($responses[0]->getField('date'))); ?></small></p>
+	<p><small>The results below were recorded on <?php echo date('l F jS, Y \a\t g:ia',strtotime($responses[0]['fieldData']['date'] ?? '')); ?></small></p>
 	<table class="user_results">
 		<thead>
 			<td class="prompt">Sub-Competency</td>
@@ -218,15 +241,37 @@ switch ( $section ) {
 
 			<?php
 			// get questions
-			$request = $fm->newFindCommand('SA_Questions_v45');
-			$request->addFindCriterion('section', "=".$section);
-			$request->addSortRule('type', 1, FILEMAKER_SORT_ASCEND);
-			$request->addSortRule('order', 2, FILEMAKER_SORT_ASCEND);
-			$result = $request->execute();
-			if (FileMaker::isError($result)) {
-				echo $result->getMessage();
+			$request = array(
+				'database' => 'MCH-Navigator',
+				'layout' => 'SA_Questions_v45',
+				'action' => 'find',
+				'parameters' => array(
+					'query' => array(
+						array(
+							'section' => '=' . (int) $section,
+						),
+					),
+					'sort' => array(
+						array(
+							'fieldName' => 'type',
+							'sortOrder' => 'ascend',
+						),
+						array(
+							'fieldName' => 'order',
+							'sortOrder' => 'ascend',
+						),
+					),
+					'limit' => 100,
+				),
+			);
+			$result = do_filemaker_request($request, 'array');
+			$records = array();
+			if ((int) ($result['messages'][0]['code'] ?? 500) !== 0) {
+				echo $result['messages'][0]['message'] ?? 'Error loading questions.';
 			} else {
-				$records = $result->getRecords();
+				foreach ($result['response']['data'] as $row) {
+					$records[] = fm_record_shim($row);
+				}
 			}
 			// display
 			foreach ($records as $record) {

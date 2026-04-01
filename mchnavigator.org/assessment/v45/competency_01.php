@@ -1,7 +1,6 @@
 <?php
 include("../account/cookie.php");
-include_once(__DIR__ . "/../../../globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
+require_once __DIR__ . '/../../filemaker/data-api.php';
 $section = 'assessment';
 $page = 'competency';
 $page_title = "Self-Assessment: Competency 1";
