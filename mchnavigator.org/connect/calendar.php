@@ -21,7 +21,7 @@ include ('../incl/header.html');
 <h3><i class="icon mch-calendar"></i> UPCOMING TRAININGS</h3>
 <?php
 	/* SETUP */
-	include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
+	include_once(__DIR__ . "/../../globals/filemaker_init.php");
 	$fm = db_connect("MCH-Navigator");
 	$find = $fm->newFindCommand('NewsEvents');
 	

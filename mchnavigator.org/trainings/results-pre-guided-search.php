@@ -24,7 +24,7 @@ include ('../incl/header.html');
 
 <?php
 /* SETUP */
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
+include_once(__DIR__ . "/../../globals/filemaker_init.php");
 $fm = db_connect("MCH-Navigator");
 $find = $fm->newFindCommand('Web Search');
 $sortFields = "";
@@ -32,7 +32,7 @@ $selfLink = "results.php?";
 
 //extract the data arrays and put them into $key => $value format.
 extract($_GET, EXTR_OVERWRITE);
-include_once("/home/dh_mch_sftp/globals/scrubber.php");
+include_once(__DIR__ . "/../../globals/scrubber.php");
 
 if(isset($sort)){
 	$selfLink .= "sort=".$sort."&amp;";

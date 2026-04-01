@@ -7,9 +7,9 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 # --------------------------------------- knock out unlogged people
 if (isset($_COOKIE['mchnavsa'])) {
 	$cookieArrayGet = unserialize($_COOKIE['mchnavsa']);
-	$email = $cookieArrayGet['email'];
-	$uID = $cookieArrayGet['uID'];
-	$admin = $cookieArrayGet['admin'];
+	$email = $cookieArrayGet['email'] ?? '';
+	$uID = $cookieArrayGet['uID'] ?? '';
+	$admin = $cookieArrayGet['admin'] ?? '';
 	#echo "logged in as ".$uID;
 } else {
 	#echo '<!-- else -->';

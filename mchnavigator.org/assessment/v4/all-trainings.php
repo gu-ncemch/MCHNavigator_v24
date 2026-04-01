@@ -15,7 +15,7 @@ li.true{ background-color: yellow; }
 <body>
 <p>The following is a real-time analysis of the <strong>WEB READY</strong> trainings in the MCH Navigator database. The trainings here will appear as they would in the Learning Plan.</p>
 <?php
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
+include_once(__DIR__ . "/../../../globals/filemaker_init.php");
 $fm = db_connect("MCH-Navigator");
 
 // get all trainings

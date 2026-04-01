@@ -18,7 +18,7 @@ include ('incl/header.html');
 		</div>
 	</div>
 </div>	
-<span><?php include('/home/dh_mch_sftp/globals/translate.php') ?></span> 
+<span><?php include(__DIR__ . "/../globals/translate.php") ?></span> 
 
 </div>
 </div>

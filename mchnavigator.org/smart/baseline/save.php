@@ -5,7 +5,7 @@
 // header('Cache-Control: post-check=0, pre-check=0', false);
 // header('Pragma: no-cache'); 
 
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
+include_once(__DIR__ . "/../../../globals/filemaker_init.php");
 
 // get user id -------------------------------------------------------------------------------------------------------------
 extract($_POST, EXTR_OVERWRITE);

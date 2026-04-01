@@ -5,30 +5,47 @@ header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
+require_once __DIR__ . '/../../filemaker/data-api.php';
+
+$cookieDomain = (($_SERVER['HTTP_HOST'] ?? '') === 'www.mchnavigator.org') ? 'www.mchnavigator.org' : '';
 
 // get user id -------------------------------------------------------------------------------------------------------------
 extract($_POST, EXTR_OVERWRITE);
-$fm      = db_connect("MCH-Navigator");
 
-$request = $fm->newFindCommand('SA_Users');
-$request->setLogicalOperator(FILEMAKER_FIND_AND);
-$request->addFindCriterion('email', "==\"" . $email . "\"");
-$request->addFindCriterion('password', "==\"" . $password . "\"");
-$result = $request->execute();
+$email = isset($email) ? trim((string) $email) : '';
+$password = isset($password) ? (string) $password : '';
 
-if (FileMaker::isError($result)) {
-	$errorOnPage = "<!--Databasae error. " . $result->getMessage() . '-->';
+$request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'SA_Users',
+	'action' => 'find',
+	'parameters' => array(
+		'query' => array(
+			array(
+				'email' => '=="' . $email . '"',
+				'password' => '=="' . $password . '"',
+			),
+		),
+		'limit' => 1,
+	),
+);
+
+$result = do_filemaker_request($request, 'array');
+$resultCode = (int) ($result['messages'][0]['code'] ?? 500);
+
+if ($resultCode !== 0 || empty($result['response']['data'][0])) {
+	$errorMessage = $result['messages'][0]['message'] ?? 'Unknown FileMaker error';
+	$errorOnPage = '<!--Database error. ' . htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') . '-->';
 	header("HTTP/1.0 401 Unauthorized");
 } else {
-	$record = $result->getFirstRecord();
+	$record = $result['response']['data'][0];
 		// create cookie -------------------------------------------------------------------------------
 		$cookieArrayPut = array(
-			'uID' => $record->getRecordId(),
-			'email' => $record->getField('email'),
-			'admin' => $record->getField('admin')
+			'uID' => $record['recordId'],
+			'email' => $record['fieldData']['email'] ?? '',
+			'admin' => $record['fieldData']['admin'] ?? ''
 		);
-		setcookie('mchnavsa', serialize($cookieArrayPut), time() + 60 * 60 * 24 * 30, '/', 'www.mchnavigator.org', isset($_SERVER["HTTPS"]), true);
+		setcookie('mchnavsa', serialize($cookieArrayPut), time() + 60 * 60 * 24 * 30, '/', $cookieDomain, isset($_SERVER["HTTPS"]), true);
 		header("Location: /assessment/dashboard.php");
 		exit;
 }
@@ -36,7 +53,7 @@ if (FileMaker::isError($result)) {
 
 
 <?php
-setcookie ('mchnavsa', '', time()-50000, '/', 'www.mchnavigator.org', isset($_SERVER["HTTPS"]), true);
+setcookie ('mchnavsa', '', time()-50000, '/', $cookieDomain, isset($_SERVER["HTTPS"]), true);
 unset($_COOKIE['mchnavsa']);
 
 $section = 'assessment';

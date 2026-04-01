@@ -1,6 +1,6 @@
 <?php
 include("../../account/cookie.php");
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
+include_once(__DIR__ . "/../../../globals/filemaker_init.php");
 $fm = db_connect("MCH-Navigator");
 $section = 'assessment';
 $page = 'Pretest';
@@ -26,8 +26,8 @@ include ('../incl/header.html');
 
 		include("../../account/cookie.php");
 
-		include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-		include_once("/home/dh_mch_sftp/globals/scrubber.php");
+		include_once(__DIR__ . "/../../../globals/filemaker_init.php");
+		include_once(__DIR__ . "/../../../globals/scrubber.php");
 
 		$user_points = 0;
 		$correct_answers = array(

@@ -4,8 +4,8 @@
 session_start();
 	session_destroy();
 	session_start();
-	include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-	include_once("/home/dh_mch_sftp/globals/scrubber.php");
+	include_once(__DIR__ . "/../../../globals/filemaker_init.php");
+	include_once(__DIR__ . "/../../../globals/scrubber.php");
 $errorOnPage = null;
 
 // prep data --------------------------------------------------------------------------------------------------------------
@@ -167,7 +167,7 @@ include ('../incl/header.html');
 	$message .= '<p>Go to <a href="https://www.mchnavigator.org/smart">https://www.mchnavigator.org/smart</a> to access the MCHsmart curriculum.  Here’s to a good learning experience!</p>';
 
 	// build the email
-	include_once("/home/dh_mch_sftp/globals/phpmailer/setup.php");
+	include_once(__DIR__ . '/../../../globals/phpmailer/setup.php');
 	$mail->setFrom($from, $fromname);
 	$mail->addAddress($to);
 	$mail->addReplyTo($replyto, $replytoname);

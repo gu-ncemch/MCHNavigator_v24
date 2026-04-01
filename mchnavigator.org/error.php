@@ -1,4 +1,4 @@
-<?php include_once("/home/dh_mch_sftp/globals/errors.php"); ?>
+<?php include_once(__DIR__ . "/../globals/errors.php"); ?>
 <!DOCTYPE html>
 <html lang="en" >
 <head>
