@@ -6,29 +6,40 @@ header('Cache-Control: post-check=0, pre-check=0', FALSE);
 header('Pragma: no-cache');
 
 include("../account/cookie.php");
-include_once(__DIR__ . "/../../../globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
+require_once __DIR__ . '/../../filemaker/data-api.php';
 $responseDate = null;
 
 function getPlan($section, $name){
-	global $fm, $uID, $responseDate;
+	global $uID, $responseDate;
 
-	// $uID = 18;
-	$request = $fm->newFindCommand('SA_Responses_v45');
-	$request->addFindCriterion('uID', "=".$uID);
-	$request->addFindCriterion('section', "=".$section);
-	// echo $uID;
-	$request->addSortRule('date', 1, FILEMAKER_SORT_DESCEND);
-	$request->setRange(0, 1);
-	$result = $request->execute();
+	$request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'SA_Responses_v45',
+		'action' => 'find',
+		'parameters' => array(
+			'query' => array(
+				array(
+					'uID' => (string) ((int) $uID),
+					'section' => (string) ((int) $section),
+				),
+			),
+			'sort' => array(
+				array(
+					'fieldName' => 'date',
+					'sortOrder' => 'descend',
+				),
+			),
+			'limit' => 1,
+		),
+	);
+	$result = do_filemaker_request($request, 'array');
 
-	if (FileMaker::isError($result)) {
+	if ((int) ($result['messages'][0]['code'] ?? 500) !== 0 || empty($result['response']['data'][0])) {
 		// echo 'You have not yet completed Competency '.$section.'<br>';
 	} else {
-		$records = $result->getRecords();
-		$record = $records[0];
-		$rID = $record->getField('rID');
-		$responseDate = $record->getField('date');
+		$record = $result['response']['data'][0];
+		$rID = $record['fieldData']['rID'] ?? '';
+		$responseDate = $record['fieldData']['date'] ?? '';
 		// echo $section.'-'.$responseDate.'<br>';
 		include("csv_single_competency.php");
 	}

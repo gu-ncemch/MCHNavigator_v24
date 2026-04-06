@@ -8,17 +8,22 @@ require_once __DIR__ . '/../../filemaker/data-api.php';
 // prep data ----------------------------------------------------------
 extract($_POST, EXTR_OVERWRITE);
 
-$responseIDs = array();
-$responseTypes = array();
-$responseValues = array();
+$fieldData = array(
+	'uID' => (string) $uID,
+	'section' => (string) $section,
+	'notes' => isset($notes) ? (string) $notes : '',
+);
+
+$responseCount = 1;
 foreach($_POST as $k => $v){
 	if($k != "section" && $k != "notes" && $k != "pathway"){
 		#prep work
 		$idBits = explode("-", $k);
 		$idBits[0] = str_replace("_",".",$idBits[0]);
-		$responseIDs[] = $idBits[0];
-		$responseTypes[] = $idBits[1];
-		$responseValues[] = $v;
+		$fieldData['responseID(' . $responseCount . ')'] = (string) $idBits[0];
+		$fieldData['responseType(' . $responseCount . ')'] = (string) $idBits[1];
+		$fieldData['response(' . $responseCount . ')'] = is_numeric($v) ? (float) $v : (string) $v;
+		$responseCount++;
 	}
 }
 
@@ -27,20 +32,15 @@ $request = array(
 	'layout' => 'SA_Responses_v45',
 	'action' => 'create',
 	'parameters' => array(
-		'fieldData' => array(
-			'uID' => $uID,
-			'section' => $section,
-			'notes' => $notes,
-			'responseID' => $responseIDs,
-			'responseType' => $responseTypes,
-			'response' => $responseValues,
-		),
+		'fieldData' => $fieldData,
 	),
 );
 $result = do_filemaker_request($request, 'array');
 if ((int) ($result['messages'][0]['code'] ?? 500) !== 0) {
-	echo "error!";
-	echo $result['messages'][0]['message'] ?? 'Unknown FileMaker error';
+	echo '<pre>';
+	print_r($result);
+	echo '</pre>';
+	exit;
 }
 
 $zeroLead = $section < 9 ? "0" : "";

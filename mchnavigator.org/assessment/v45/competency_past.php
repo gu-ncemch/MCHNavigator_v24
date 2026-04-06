@@ -25,9 +25,14 @@
 
 	if ( ! function_exists('fm_repeat_value')) {
 	function fm_repeat_value( $row, $field, $index ) {
-		$value = $row['fieldData'][$field] ?? '';
+		$fieldData = $row['fieldData'] ?? array();
+		$value = $fieldData[$field] ?? '';
 		if ( is_array( $value ) ) {
 			return $value[$index] ?? '';
+		}
+		$repeatKey = $field . '(' . ($index + 1) . ')';
+		if (array_key_exists($repeatKey, $fieldData)) {
+			return $fieldData[$repeatKey];
 		}
 		return $index === 0 ? $value : '';
 	}}
@@ -40,7 +45,7 @@
 		'parameters' => array(
 			'query' => array(
 				array(
-					'rID' => '=' . scrubber($rID, 'string'),
+					'rID' => scrubber($rID, 'string'),
 				),
 			),
 			'limit' => 10,
@@ -54,11 +59,11 @@
 		$responses = $result['response']['data'];
 	}
 	$userResponses = array();
+	$sub_i = 0;
+	$sub_ks = 0;
+	$sub_c = 0;
 	// print_r($responses);
 	foreach ($responses as $response) {
-		$sub_i = 0;
-		$sub_ks = 0;
-		$sub_c = 0;
 		for($i = 0; $i <= 30; $i++){
 			if(fm_repeat_value($response, 'responseID', $i) != ""){
 				$responseId = fm_repeat_value($response, 'responseID', $i);
@@ -76,7 +81,7 @@
 		// print_r($userResponses);
 	}
 	// get previous responses
-	$avg = round($sub_ks/$sub_c, 1);
+	$avg = $sub_c > 0 ? round($sub_ks / $sub_c, 1) : 0;
 	?>
 <p class="user_results"><strong>Overall Summary of this Competency:</strong> You indicated that this competency had <strong class="<?php echo $values[$sub_i]; ?>"><?php echo $values[$sub_i]; ?> Priority
 		<!-- (<?php echo $sub_i; ?> out of 3)-->
@@ -248,7 +253,7 @@ switch ( $section ) {
 				'parameters' => array(
 					'query' => array(
 						array(
-							'section' => '=' . (int) $section,
+							'section' => (string) ((int) $section),
 						),
 					),
 					'sort' => array(

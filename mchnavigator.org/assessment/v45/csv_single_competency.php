@@ -9,42 +9,79 @@ header("Content-Type: text/csv");
 
 	// NEXT SECTION
 	$values = array("No","Low","Medium","High");
+	if ( ! function_exists('csv_repeat_value')) {
+	function csv_repeat_value( $row, $field, $index ) {
+		$value = $row['fieldData'][$field] ?? '';
+		if ( is_array( $value ) ) {
+			return $value[$index] ?? '';
+		}
+		return $index === 0 ? $value : '';
+	}}
 	// get responses
-	$request = $fm->newFindCommand('SA_Responses_v45');
-	$request->addFindCriterion('rID', "=".$rID);
-	$result = $request->execute();
-	if (FileMaker::isError($result)) {
-		echo $result->getMessage();
+	$request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'SA_Responses_v45',
+		'action' => 'find',
+		'parameters' => array(
+			'query' => array(
+				array(
+					'rID' => scrubber($rID, 'string'),
+				),
+			),
+			'limit' => 10,
+		),
+	);
+	$result = do_filemaker_request($request, 'array');
+	$responses = array();
+	if ((int) ($result['messages'][0]['code'] ?? 500) !== 0) {
+		echo $result['messages'][0]['message'] ?? 'Error loading responses.';
 	} else {
-		$responses = $result->getRecords();
+		$responses = $result['response']['data'];
 	}
 	$userResponses = array();
 	foreach ($responses as $response) {
 		$sub_i = 0;
 		$sub_ks = 0;
 		$sub_c = 0;
-		for($i = 0; $i <= 28; $i++){if($response->getField('responseID', $i) != ""){	$userResponses[$response->getField('responseID', $i)."-".$response->getField('responseType', $i)] = $response->getField('response', $i);	if($response->getField('responseType', $i) == "I"){		$sub_i += $response->getField('response', $i);		$sub_c++;	} else {		$sub_ks += $response->getField('response', $i);		}}
+		for($i = 0; $i <= 28; $i++){if(csv_repeat_value($response, 'responseID', $i) != ""){	$userResponses[csv_repeat_value($response, 'responseID', $i)."-".csv_repeat_value($response, 'responseType', $i)] = csv_repeat_value($response, 'response', $i);	if(csv_repeat_value($response, 'responseType', $i) == "I"){		$sub_i += csv_repeat_value($response, 'response', $i);		$sub_c++;	} else {		$sub_ks += csv_repeat_value($response, 'response', $i);		}}
 		}
 	}
 
 
 	#print_r($userResponses);
 	// get previous responses
-	$request = $fm->newFindCommand('SA_Responses_v45');
-	$request->addFindCriterion('uID', "=".$uID);
-	$request->addFindCriterion('rID', "<".$rID);
-	$request->addFindCriterion('section', "=".$section);
-	$request->addSortRule('date', 1, FILEMAKER_SORT_DESCEND);
-	$result = $request->execute();
-	if (FileMaker::isError($result)) {
+	$request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'SA_Responses_v45',
+		'action' => 'find',
+		'parameters' => array(
+			'query' => array(
+				array(
+					'uID' => (string) ((int) $uID),
+					'rID' => '<' . scrubber($rID, 'string'),
+					'section' => (string) ((int) $section),
+				),
+			),
+			'sort' => array(
+				array(
+					'fieldName' => 'date',
+					'sortOrder' => 'descend',
+				),
+			),
+			'limit' => 50,
+		),
+	);
+	$result = do_filemaker_request($request, 'array');
+	if ((int) ($result['messages'][0]['code'] ?? 500) !== 0 || empty($result['response']['data'])) {
 		$pastDate = "";
+		$responsesP = array();
 	} else {
-		$responsesP = $result->getRecords();
-		$pastDate = date('n/j/Y',strtotime($responsesP[0]->getField('date')));
+		$responsesP = $result['response']['data'];
+		$pastDate = date('n/j/Y',strtotime($responsesP[0]['fieldData']['date'] ?? ''));
 	}
 	$userResponsesP = array();
 	foreach ($responsesP as $responseP) {
-		for($i = 0; $i <= 28; $i++){if($responseP->getField('responseID', $i) != ""){	$userResponsesP[$responseP->getField('responseID', $i)."-".$responseP->getField('responseType', $i)] = $responseP->getField('response', $i);}
+		for($i = 0; $i <= 28; $i++){if(csv_repeat_value($responseP, 'responseID', $i) != ""){	$userResponsesP[csv_repeat_value($responseP, 'responseID', $i)."-".csv_repeat_value($responseP, 'responseType', $i)] = csv_repeat_value($responseP, 'response', $i);}
 		}
 	}
 	?>
@@ -55,7 +92,7 @@ if($plan){
 }
 ?>
 Section,Level,Shortcode,Importance,Importance Level (Numerical),Knowledge,Knowledge Level (Numerical),Description
-Overall Summary,<?php echo $responseDate; ?>,-, <?php echo ($sub_i/$sub_c)>1.5 ? "Was" : "Was not"; ?> a priority, <?php echo round($sub_i/$sub_c, 1); ?>, <?php echo $values[ceil($sub_ks/$sub_c)]; ?> understanding, <?php echo round($sub_ks/$sub_c, 1); ?>,"Overall Summary of **<?php echo $name; ?>** The results below were recorded on <?php echo date('l F jS, Y \a\t g:ia',strtotime($responses[0]->getField('date'))); ?>"<?php echo PHP_EOL; ?>
+Overall Summary,<?php echo $responseDate; ?>,-, <?php echo ($sub_i/$sub_c)>1.5 ? "Was" : "Was not"; ?> a priority, <?php echo round($sub_i/$sub_c, 1); ?>, <?php echo $values[ceil($sub_ks/$sub_c)]; ?> understanding, <?php echo round($sub_ks/$sub_c, 1); ?>,"Overall Summary of **<?php echo $name; ?>** The results below were recorded on <?php echo date('l F jS, Y \a\t g:ia',strtotime($responses[0]['fieldData']['date'] ?? '')); ?>"<?php echo PHP_EOL; ?>
 
 
 
@@ -64,15 +101,38 @@ Overall Summary,<?php echo $responseDate; ?>,-, <?php echo ($sub_i/$sub_c)>1.5 ?
 
 <?php
 	// get questions
-	$request = $fm->newFindCommand('SA_Questions_v45');
-	$request->addFindCriterion('section', "=".$section);
-	$request->addSortRule('type', 1, FILEMAKER_SORT_ASCEND);
-	$request->addSortRule('order', 2, FILEMAKER_SORT_ASCEND);
-	$result = $request->execute();
-	if (FileMaker::isError($result)) {
-		echo $result->getMessage();
+	$request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'SA_Questions_v45',
+		'action' => 'find',
+		'parameters' => array(
+			'query' => array(
+				array(
+					'section' => (string) ((int) $section),
+				),
+			),
+			'sort' => array(
+				array(
+					'fieldName' => 'type',
+					'sortOrder' => 'ascend',
+				),
+				array(
+					'fieldName' => 'order',
+					'sortOrder' => 'ascend',
+				),
+			),
+			'limit' => 100,
+		),
+	);
+	$result = do_filemaker_request($request, 'array');
+	if ((int) ($result['messages'][0]['code'] ?? 500) !== 0) {
+		echo $result['messages'][0]['message'] ?? 'Error loading questions.';
+		$records = array();
 	} else {
-		$records = $result->getRecords();
+		$records = array();
+		foreach ($result['response']['data'] as $row) {
+			$records[] = fm_record_shim($row);
+		}
 	}
 	// give the goods
 	$secondSet = "Knowledge";
@@ -106,5 +166,5 @@ Overall Summary,<?php echo $responseDate; ?>,-, <?php echo ($sub_i/$sub_c)>1.5 ?
 		echo ",\"".$record->getField('text')."\"".PHP_EOL;
 	}
 ?>
-<?php echo PHP_EOL; ?>My Examples and Notes,-,-,-,-,-,-,"<?php echo $response->getField('notes'); ?>"
+<?php echo PHP_EOL; ?>My Examples and Notes,-,-,-,-,-,-,"<?php echo $response['fieldData']['notes'] ?? ''; ?>"
 <?php echo PHP_EOL; ?>
