@@ -2,9 +2,7 @@
 
 
 		include("../../account/cookie.php");
-		include_once(__DIR__ . "/../../../globals/filemaker_init.php");
-		include_once(__DIR__ . "/../../../globals/scrubber.php");
-		$fm = db_connect("MCH-Navigator");
+		require_once __DIR__ . '/../../filemaker/data-api.php';
 		$section = 'assessment';
 		$page = 'Test';
 
@@ -54,15 +52,13 @@
 		extract($_POST, EXTR_OVERWRITE);
 
 		// give the data up to the data gods -------------------------------------------------------
-		$fm      = db_connect("MCH-Navigator");
-
-
-		$recordToAdd = $fm->newAddCommand('MCH_Smart_Test_Responses');
-		$recordToAdd->setField('uID', $uID);
+		$fieldData = array(
+			'uID' => $uID,
+		);
 
 		#echo '<script type="text/javascript">$( document ).ready(function() { $("input").prop("disabled", true);';
 		foreach($_POST as $fieldname => $response){
-			$recordToAdd->setField($fieldname, $response);
+			$fieldData[$fieldname] = $response;
 			// echo $fieldname . ' = ' . $response . PHP_EOL;
 			if(strpos($fieldname,"Competency_") !== false){
 				// echo $correct_answers[$fieldname] . ' ?= ' . $response . PHP_EOL;
@@ -78,48 +74,57 @@
 
 		// if this is the post test and they have already taken it, delete the old one
 		$recordIDtoDelete = null;
-		// if($test_type == "post"){
-			// echo "post logic";
-			$requestToDelete = $fm->newFindCommand('MCH_Smart_Test_Responses');
-			$requestToDelete->addFindCriterion('uID', "==\"" . $uID . "\"");
-			// $requestToDelete->addFindCriterion("test_type", "post");
-			$requestToDelete->addFindCriterion("test_type", $test_type);
-			$resultToDelete = $requestToDelete->execute();
-			if (!FileMaker::isError($resultToDelete)) {
-				$records = $resultToDelete->getRecords();
-				$record = $records[0];
-				$recordIDtoDelete = $record->getField('recordID');
-				// echo $record->getField('score');
-				// echo $recordID;
-				// move this so it goes after a successful save...
-				// $record_to_delete = $fm->getRecordById('MCH_Smart_Test_Responses', $recordID);
-				// $record_to_delete->delete();
-				if($test_type == "post" && $score > $record->getField('score')){
-					$newDelete = $fm->newDeleteCommand('MCH_Smart_Test_Responses', $recordIDtoDelete);
-					$deleteResult = $newDelete->execute();
-					// echo "Your score (".$score."%) has been recorded.";
-				} else {
-					// echo "This score (".$score."%) is less than or equal to previous results (".$record->getField('score')."%) and has not been recorded.";
-				}
-			}
-		// }
+		$existingScore = null;
+		$find_request = array(
+			'database' => 'MCH-Navigator',
+			'layout' => 'MCH_Smart_Test_Responses',
+			'action' => 'find',
+			'parameters' => array(
+				'query' => array(
+					array(
+						'uID' => '=="' . $uID . '"',
+						'test_type' => '=="' . $test_type . '"',
+					),
+				),
+				'limit' => 1,
+			),
+		);
+		$resultToDelete = do_filemaker_request($find_request, 'array');
+		$findCode = (int) ($resultToDelete['messages'][0]['code'] ?? 500);
+		if ($findCode === 0 && !empty($resultToDelete['response']['data'][0])) {
+			$existingRecord = $resultToDelete['response']['data'][0];
+			$recordIDtoDelete = (int) ($existingRecord['recordId'] ?? 0);
+			$existingScore = (int) ($existingRecord['fieldData']['score'] ?? 0);
+		}
 
+		// Preserve original behavior for post tests where lower/equal scores are not recorded.
+		if ($test_type == 'post' && $existingScore !== null && $score <= $existingScore) {
+			header("Location: https://www.mchnavigator.org/smart/test/review.php?type=".$test_type);
+			die();
+		}
 
+		$fieldData['score'] = $score;
+		$create_request = array(
+			'database' => 'MCH-Navigator',
+			'layout' => 'MCH_Smart_Test_Responses',
+			'action' => 'create',
+			'parameters' => array(
+				'fieldData' => $fieldData,
+			),
+		);
+		$resultToAdd = do_filemaker_request($create_request, 'array');
+		$createCode = (int) ($resultToAdd['messages'][0]['code'] ?? 500);
 
-
-		$recordToAdd->setField('score', $score);
-
-		$resultToAdd = $recordToAdd->execute();
-
-		if (FileMaker::isError($resultToAdd)) {
-			// echo "Error!";
-			// echo $resultToAdd->getMessage();
-		} else {
-			// saved
-			if(!empty($recordIDtoDelete)){
-				$newDelete = $fm->newDeleteCommand('MCH_Smart_Test_Responses', $recordIDtoDelete);
-				$deleteResult = $newDelete->execute();
-			}
+		if ($createCode === 0 && !empty($recordIDtoDelete)) {
+			$delete_request = array(
+				'database' => 'MCH-Navigator',
+				'layout' => 'MCH_Smart_Test_Responses',
+				'action' => 'delete',
+				'record' => $recordIDtoDelete,
+				'challenge_field' => 'uID',
+				'challenge_value' => (string) $uID,
+			);
+			do_filemaker_request($delete_request, 'array');
 		}
 
 		header("Location: https://www.mchnavigator.org/smart/test/review.php?type=".$test_type);
