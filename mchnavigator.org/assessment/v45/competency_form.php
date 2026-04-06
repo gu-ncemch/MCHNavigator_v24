@@ -30,9 +30,96 @@ function back2menu() {
 	$("#pathway").val("single");
 	$("#submitForm").trigger('click');
 }
+
+function setupAssessmentKeyboardNavigation() {
+	var form = document.querySelector('form[name^="competency_"]');
+	if (!form) {
+		return;
+	}
+
+	var radios = Array.prototype.slice.call(form.querySelectorAll('input[type="radio"]'));
+	if (!radios.length) {
+		return;
+	}
+
+	var groupNames = [];
+	var groups = {};
+
+	radios.forEach(function(radio) {
+		if (!groups[radio.name]) {
+			groups[radio.name] = [];
+			groupNames.push(radio.name);
+		}
+		groups[radio.name].push(radio);
+	});
+
+	function focusNextTarget(groupIndex) {
+		var nextGroupName = groupNames[groupIndex + 1];
+		if (nextGroupName && groups[nextGroupName] && groups[nextGroupName][0]) {
+			groups[nextGroupName][0].focus();
+			return true;
+		}
+
+		var notes = form.querySelector('textarea[name="notes"]');
+		if (notes) {
+			notes.focus();
+			return true;
+		}
+
+		return false;
+	}
+
+	function focusPreviousTarget(groupIndex) {
+		var previousGroupName = groupNames[groupIndex - 1];
+		if (previousGroupName && groups[previousGroupName] && groups[previousGroupName].length) {
+			groups[previousGroupName][groups[previousGroupName].length - 1].focus();
+			return true;
+		}
+
+		return false;
+	}
+
+	radios.forEach(function(radio) {
+		radio.addEventListener('keydown', function(event) {
+			var groupIndex = groupNames.indexOf(radio.name);
+			var group = groups[radio.name] || [];
+			var optionIndex = group.indexOf(radio);
+
+			if (event.key === 'Tab') {
+				if (event.shiftKey) {
+					if (optionIndex > 0) {
+						event.preventDefault();
+						group[optionIndex - 1].focus();
+					} else if (focusPreviousTarget(groupIndex)) {
+						event.preventDefault();
+					}
+				} else {
+					if (optionIndex < group.length - 1) {
+						event.preventDefault();
+						group[optionIndex + 1].focus();
+					} else if (focusNextTarget(groupIndex)) {
+						event.preventDefault();
+					}
+				}
+			}
+
+			if (event.key === ' ' || event.key === 'Spacebar' || event.key === 'Enter') {
+				event.preventDefault();
+				radio.checked = true;
+				radio.dispatchEvent(new Event('change', { bubbles: true }));
+				focusNextTarget(groupIndex);
+			}
+		});
+	});
+}
+
+$(document).ready(function() {
+	setupAssessmentKeyboardNavigation();
+});
 </script>
 
 <p><strong><em>Before You Begin.</em> Please assess the importance of this competency as a whole to your work. This will help us prioritize trainings in your learning plan. No matter how you respond to this question, please answer all questions on this page. Thank you.</strong></p>
+<p id="assessment-keyboard-help"><strong>Keyboard help:</strong> Use <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd> to move through answer choices. Press <kbd>Space</kbd> or <kbd>Enter</kbd> to select an answer and move to the next question.</p>
 
 <?php
 if ( ! function_exists('v45_repeat_value')) {
