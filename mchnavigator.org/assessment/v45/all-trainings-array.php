@@ -1,5 +1,7 @@
 <?php
 // get all web ready trainings
+require_once __DIR__ . '/../../filemaker/data-api.php';
+
 $request = array(
 	'database' => 'MCH-Navigator',
 	'layout' => 'all-trainings',
