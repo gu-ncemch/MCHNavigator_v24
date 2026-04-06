@@ -16,7 +16,7 @@ if($_POST["action"]=="email"){
 	$message = '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>MCH Navigator Personalized Learning Plan</title>'.$css.'</head><body>'.$_POST["html"].'</body></html>';
 
 	// build the email
-	include_once("/home/dh_mch_sftp/globals/phpmailer/setup.php");
+	include_once(__DIR__ . '/../../../globals/phpmailer/setup.php');
 	$mail->setFrom($from, $fromname);
 	$mail->addAddress($to);
 	$mail->addReplyTo($replyto, $replytoname);
