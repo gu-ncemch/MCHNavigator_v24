@@ -30,9 +30,151 @@ function back2menu() {
 	$("#pathway").val("single");
 	$("#submitForm").trigger('click');
 }
+
+function setupAssessmentKeyboardNavigation() {
+	var form = document.querySelector('form[name^="competency_"]');
+	if (!form) {
+		return;
+	}
+
+	var radios = Array.prototype.slice.call(form.querySelectorAll('input[type="radio"]'));
+	if (!radios.length) {
+		return;
+	}
+
+	var groupNames = [];
+	var groups = {};
+
+	radios.forEach(function(radio) {
+		if (!groups[radio.name]) {
+			groups[radio.name] = [];
+			groupNames.push(radio.name);
+		}
+		groups[radio.name].push(radio);
+	});
+
+	function focusNextTarget(groupIndex) {
+		var nextGroupName = groupNames[groupIndex + 1];
+		if (nextGroupName && groups[nextGroupName] && groups[nextGroupName][0]) {
+			groups[nextGroupName][0].focus();
+			return true;
+		}
+
+		var notes = form.querySelector('textarea[name="notes"]');
+		if (notes) {
+			notes.focus();
+			return true;
+		}
+
+		return false;
+	}
+
+	function focusPreviousTarget(groupIndex) {
+		var previousGroupName = groupNames[groupIndex - 1];
+		if (previousGroupName && groups[previousGroupName] && groups[previousGroupName].length) {
+			groups[previousGroupName][groups[previousGroupName].length - 1].focus();
+			return true;
+		}
+
+		return false;
+	}
+
+	radios.forEach(function(radio) {
+		radio.addEventListener('keydown', function(event) {
+			var groupIndex = groupNames.indexOf(radio.name);
+			var group = groups[radio.name] || [];
+			var optionIndex = group.indexOf(radio);
+
+			if (event.key === 'Tab') {
+				if (event.shiftKey) {
+					if (optionIndex > 0) {
+						event.preventDefault();
+						group[optionIndex - 1].focus();
+					} else if (focusPreviousTarget(groupIndex)) {
+						event.preventDefault();
+					}
+				} else {
+					if (optionIndex < group.length - 1) {
+						event.preventDefault();
+						group[optionIndex + 1].focus();
+					} else if (focusNextTarget(groupIndex)) {
+						event.preventDefault();
+					}
+				}
+			}
+
+			if (event.key === ' ' || event.key === 'Spacebar' || event.key === 'Enter') {
+				event.preventDefault();
+				radio.checked = true;
+				radio.dispatchEvent(new Event('change', { bubbles: true }));
+				focusNextTarget(groupIndex);
+			}
+		});
+	});
+}
+
+$(document).ready(function() {
+	setupAssessmentKeyboardNavigation();
+});
 </script>
 
 <p><strong><em>Before You Begin.</em> Please assess the importance of this competency as a whole to your work. This will help us prioritize trainings in your learning plan. No matter how you respond to this question, please answer all questions on this page. Thank you.</strong></p>
+<p id="assessment-keyboard-help"><strong>Keyboard help:</strong> Use <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd> to move through answer choices. Press <kbd>Space</kbd> or <kbd>Enter</kbd> to select an answer and move to the next question.</p>
+
+<?php
+if ( ! function_exists('v45_repeat_value')) {
+	function v45_repeat_value( $row, $field, $index ) {
+		$fieldData = $row['fieldData'] ?? array();
+		$value = $fieldData[$field] ?? '';
+		if ( is_array( $value ) ) {
+			return $value[$index] ?? '';
+		}
+		$repeatKey = $field . '(' . ($index + 1) . ')';
+		if (array_key_exists($repeatKey, $fieldData)) {
+			return $fieldData[$repeatKey];
+		}
+		return $index === 0 ? $value : '';
+	}
+}
+
+$savedResponses = array();
+$savedNotes = '';
+
+$savedRequest = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'SA_Responses_v45',
+	'action' => 'find',
+	'parameters' => array(
+		'query' => array(
+			array(
+				'uID' => '=' . (int) $uID,
+				'section' => '=' . (int) $section,
+			),
+		),
+		'sort' => array(
+			array(
+				'fieldName' => 'date',
+				'sortOrder' => 'descend',
+			),
+		),
+		'limit' => 1,
+	),
+);
+$savedResult = do_filemaker_request($savedRequest, 'array');
+
+if ((int) ($savedResult['messages'][0]['code'] ?? 500) === 0 && !empty($savedResult['response']['data'][0])) {
+	$savedRecord = $savedResult['response']['data'][0];
+	$savedNotes = $savedRecord['fieldData']['notes'] ?? '';
+	for ($i = 0; $i <= 30; $i++) {
+		$responseId = v45_repeat_value($savedRecord, 'responseID', $i);
+		$responseType = v45_repeat_value($savedRecord, 'responseType', $i);
+		$responseValue = v45_repeat_value($savedRecord, 'response', $i);
+		if ($responseId !== '' && $responseType !== '') {
+			$savedResponses[$responseId . '-' . $responseType] = (string) $responseValue;
+		}
+	}
+}
+?>
 
 <form method="post" action="competency_save.php" name="competency_<?php echo $section; ?>">
 
@@ -48,32 +190,54 @@ function back2menu() {
 		<tr>
 			<td><strong>Importance</strong></td>
 			<td>
-				<label for="<?php echo $section;?>I0"><input name="<?php echo $section;?>-I" type="radio" required id="<?php echo $section;?>I0" value="0"></label>
+				<label for="<?php echo $section;?>I0"><input name="<?php echo $section;?>-I" type="radio" required id="<?php echo $section;?>I0" value="0" <?php echo (($savedResponses[$section . '-I'] ?? '') === '0') ? 'checked' : ''; ?>></label>
 			</td>
 			<td>
-				<label for="<?php echo $section;?>I1"><input name="<?php echo $section;?>-I" type="radio" required id="<?php echo $section;?>I1" value="1"></label>
+				<label for="<?php echo $section;?>I1"><input name="<?php echo $section;?>-I" type="radio" required id="<?php echo $section;?>I1" value="1" <?php echo (($savedResponses[$section . '-I'] ?? '') === '1') ? 'checked' : ''; ?>></label>
 			</td>
 			<td>
-				<label for="<?php echo $section;?>I2"><input name="<?php echo $section;?>-I" type="radio" required id="<?php echo $section;?>I2" value="2"></label>
+				<label for="<?php echo $section;?>I2"><input name="<?php echo $section;?>-I" type="radio" required id="<?php echo $section;?>I2" value="2" <?php echo (($savedResponses[$section . '-I'] ?? '') === '2') ? 'checked' : ''; ?>></label>
 			</td>
 			<td>
-				<label for="<?php echo $section;?>I3"><input name="<?php echo $section;?>-I" type="radio" required id="<?php echo $section;?>I3" value="3"></label>
+				<label for="<?php echo $section;?>I3"><input name="<?php echo $section;?>-I" type="radio" required id="<?php echo $section;?>I3" value="3" <?php echo (($savedResponses[$section . '-I'] ?? '') === '3') ? 'checked' : ''; ?>></label>
 			</td>
 		</tr>
 	</table>
 
 
-	<?php
+<?php
 // get questions
-$request = $fm->newFindCommand('SA_Questions_v45');
-$request->addFindCriterion('section', "=".$section);
-$request->addSortRule('type', 1, FILEMAKER_SORT_ASCEND);
-$request->addSortRule('order', 2, FILEMAKER_SORT_ASCEND);
-$result = $request->execute();
-if (FileMaker::isError($result)) {
-	echo $result->getMessage();
+$request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'SA_Questions_v45',
+	'action' => 'find',
+	'parameters' => array(
+		'query' => array(
+			array(
+				'section' => (string) ((int) $section),
+			),
+		),
+		'sort' => array(
+			array(
+				'fieldName' => 'type',
+				'sortOrder' => 'ascend',
+			),
+			array(
+				'fieldName' => 'order',
+				'sortOrder' => 'ascend',
+			),
+		),
+		'limit' => 100,
+	),
+);
+$result = do_filemaker_request($request, 'array');
+$records = array();
+if ((int) ($result['messages'][0]['code'] ?? 500) !== 0) {
+	echo $result['messages'][0]['message'] ?? 'Error loading questions.';
 } else {
-	$records = $result->getRecords();
+	foreach ($result['response']['data'] as $row) {
+		$records[] = fm_record_shim($row);
+	}
 }
 // give the goods
 $secondSet = "Knowledge";
@@ -141,19 +305,19 @@ foreach ($records as $record) {
 			</td>
 			<td>
 				<label for="<?php echo $qIDname.$secondSetSuffix;?>0">
-					<input name="<?php echo $qIDname.$secondSetSuffix;?>" type="radio" required id="<?php echo $qIDname.$secondSetSuffix;?>0" value="0"></label>
+					<input name="<?php echo $qIDname.$secondSetSuffix;?>" type="radio" required id="<?php echo $qIDname.$secondSetSuffix;?>0" value="0" <?php echo (($savedResponses[$qIDname.$secondSetSuffix] ?? '') === '0') ? 'checked' : ''; ?>></label>
 			</td>
 			<td>
 				<label for="<?php echo $qIDname.$secondSetSuffix;?>1">
-					<input name="<?php echo $qIDname.$secondSetSuffix;?>" type="radio" required id="<?php echo $qIDname.$secondSetSuffix;?>1" value="1"></label>
+					<input name="<?php echo $qIDname.$secondSetSuffix;?>" type="radio" required id="<?php echo $qIDname.$secondSetSuffix;?>1" value="1" <?php echo (($savedResponses[$qIDname.$secondSetSuffix] ?? '') === '1') ? 'checked' : ''; ?>></label>
 			</td>
 			<td>
 				<label for="<?php echo $qIDname.$secondSetSuffix;?>2">
-					<input name="<?php echo $qIDname.$secondSetSuffix;?>" type="radio" required id="<?php echo $qIDname.$secondSetSuffix;?>2" value="2"></label>
+					<input name="<?php echo $qIDname.$secondSetSuffix;?>" type="radio" required id="<?php echo $qIDname.$secondSetSuffix;?>2" value="2" <?php echo (($savedResponses[$qIDname.$secondSetSuffix] ?? '') === '2') ? 'checked' : ''; ?>></label>
 			</td>
 			<td>
 				<label for="<?php echo $qIDname.$secondSetSuffix;?>3">
-					<input name="<?php echo $qIDname.$secondSetSuffix;?>" type="radio" required id="<?php echo $qIDname.$secondSetSuffix;?>3" value="3"></label>
+					<input name="<?php echo $qIDname.$secondSetSuffix;?>" type="radio" required id="<?php echo $qIDname.$secondSetSuffix;?>3" value="3" <?php echo (($savedResponses[$qIDname.$secondSetSuffix] ?? '') === '3') ? 'checked' : ''; ?>></label>
 			</td>
 		</tr>
 	</table>
@@ -162,7 +326,7 @@ foreach ($records as $record) {
 	<h2>My Examples and Other Notes</h2>
 
 	<p>Please make note of examples in your work that highlight your knowledge and skills in this competency:</p>
-	<p><textarea name="notes"></textarea></p>
+	<p><textarea name="notes"><?php echo htmlspecialchars($savedNotes, ENT_QUOTES, 'UTF-8'); ?></textarea></p>
 	<p><em>Note: All questions except the “My Examples” are required</em></p>
 	<p><em>Save responses and continue to the next assessment below</em></p>
 	<p><button class="btnesque" type="button" onclick="javascript:back2menu();">Save</button> <button class="btnesque" type="button" onclick="javascript:nextModule();">Save and Continue</button></p>
