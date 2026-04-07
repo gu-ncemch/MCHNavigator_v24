@@ -1,7 +1,7 @@
 <?php
 
 
-		include("../../account/cookie.php");
+		include("../account/cookie.php");
 		require_once __DIR__ . '/../../filemaker/data-api.php';
 		$section = 'assessment';
 		$page = 'Test';
@@ -91,42 +91,47 @@
 		);
 		$resultToDelete = do_filemaker_request($find_request, 'array');
 		$findCode = (int) ($resultToDelete['messages'][0]['code'] ?? 500);
+		$existingRecordId = null;
+		$existingChallengeValue = null;
 		if ($findCode === 0 && !empty($resultToDelete['response']['data'][0])) {
 			$existingRecord = $resultToDelete['response']['data'][0];
-			$recordIDtoDelete = (int) ($existingRecord['recordId'] ?? 0);
+			$existingRecordId = (int) ($existingRecord['recordId'] ?? 0);
+			$recordIDtoDelete = $existingRecordId;
 			$existingScore = (int) ($existingRecord['fieldData']['score'] ?? 0);
+			$existingChallengeValue = $existingRecord['fieldData']['uID'] ?? (string) $uID;
 		}
 
 		// Preserve original behavior for post tests where lower/equal scores are not recorded.
 		if ($test_type == 'post' && $existingScore !== null && $score <= $existingScore) {
-			header("Location: https://www.mchnavigator.org/smart/test/review.php?type=".$test_type);
+			header("Location: /smart/test/review.php?type=".$test_type);
 			die();
 		}
 
 		$fieldData['score'] = $score;
-		$create_request = array(
-			'database' => 'MCH-Navigator',
-			'layout' => 'MCH_Smart_Test_Responses',
-			'action' => 'create',
-			'parameters' => array(
-				'fieldData' => $fieldData,
-			),
-		);
-		$resultToAdd = do_filemaker_request($create_request, 'array');
-		$createCode = (int) ($resultToAdd['messages'][0]['code'] ?? 500);
-
-		if ($createCode === 0 && !empty($recordIDtoDelete)) {
-			$delete_request = array(
+		if (!empty($existingRecordId)) {
+			$save_request = array(
 				'database' => 'MCH-Navigator',
 				'layout' => 'MCH_Smart_Test_Responses',
-				'action' => 'delete',
-				'record' => $recordIDtoDelete,
+				'action' => 'edit',
+				'record' => $existingRecordId,
 				'challenge_field' => 'uID',
-				'challenge_value' => (string) $uID,
+				'challenge_value' => $existingChallengeValue,
+				'parameters' => array(
+					'fieldData' => $fieldData,
+				),
 			);
-			do_filemaker_request($delete_request, 'array');
+		} else {
+			$save_request = array(
+				'database' => 'MCH-Navigator',
+				'layout' => 'MCH_Smart_Test_Responses',
+				'action' => 'create',
+				'parameters' => array(
+					'fieldData' => $fieldData,
+				),
+			);
 		}
+		do_filemaker_request($save_request, 'array');
 
-		header("Location: https://www.mchnavigator.org/smart/test/review.php?type=".$test_type);
+		header("Location: /smart/test/review.php?type=".$test_type);
 		die();
 		?>
