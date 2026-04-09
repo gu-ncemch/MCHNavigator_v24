@@ -1,57 +1,50 @@
 <?php
-// echo "form_setup included.";
-// echo $uID;
+require_once __DIR__ . '/../../filemaker/data-api.php';
 
+$request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'MCH_Smart_Baseline',
+	'action' => 'find',
+	'parameters' => array(
+		'query' => array(
+			array(
+				'uID' => '=="' . (string) $uID . '"',
+			),
+		),
+		'limit' => 1,
+	),
+);
 
-  include_once(__DIR__ . "/../../../globals/filemaker_init.php");
+$result = do_filemaker_request($request, 'array');
+if ((int) ($result['messages'][0]['code'] ?? 500) === 0 && !empty($result['response']['data'][0])) {
+	$record = $result['response']['data'][0];
+	$fieldData = $record['fieldData'] ?? array();
+	$recordID = $fieldData['recordID'] ?? '';
+	$scripts = array();
 
-  // check for data
-  $fm = db_connect("MCH-Navigator");
-  $request = $fm->newFindCommand('MCH_Smart_Baseline');
-  $request->addFindCriterion('uID', "==\"" . $uID . "\"");
-  $result = $request->execute();
-  if (!FileMaker::isError($result)) {
-    $records = $result->getRecords();
-    $record = $records[0];
+	foreach ($fieldData as $fieldname => $value) {
+		if (strpos($fieldname, 'Competency_' . $section . '_') !== 0) {
+			continue;
+		}
 
-    $recordID = $record->getField('recordID');
-    // echo $record->getField('Competency_1_1_Status');
-    // echo $record->getField('Competency_1_1_Knowledge');
-    // echo $record->getField('Competency_1_1_Skills');
-    // echo $record->getField('recordID');
-    
+		if (strpos($fieldname, 'Feedback') !== false) {
+			$scripts[] = '$("textarea#' . addslashes($fieldname) . '").val(' . json_encode((string) $value) . ');';
+		} else if (strpos($fieldname, 'Status') === false) {
+			$scripts[] = '$("input[name=' . json_encode($fieldname) . '][value=' . json_encode((string) $value) . ']").prop("checked", true);';
+		}
+	}
 
-// print_r($record->_impl->_fields);
-
-    echo '<script type="text/javascript">$( document ).ready(function() { ';
-
-    foreach($record->_impl->_fields as $fieldname => $value){
-      if(strpos($fieldname,"Competency_".$section."_") !== false){
-          if(strpos($fieldname,"Feedback") !== false){
-            // if feedback, put value
-            echo '$("textarea#'.$fieldname.'").val("'.$record->getField($fieldname).'");' . PHP_EOL; 
-          } else if(strpos($fieldname,"Status") === false){
-            // if choice (not status) set input
-            echo '$("input[name=\''.$fieldname.'\'][value=\''.$record->getField($fieldname).'\']").prop("checked", true);' . PHP_EOL; 
-          }
-
-      }
-    }
-    // echo '$("input[name=\'Competency_1_1_Knowledge\'][value=\''.$record->getField('Competency_1_1_Knowledge').'\']").prop("checked", true);' . PHP_EOL;
-
-    // echo '$("input[name=\'Competency_1_1_Skills\'][value=\''.$record->getField('Competency_1_1_Skills').'\']").prop("checked", true);' . PHP_EOL;
-
-    echo '});</script>';
-
-  }
-
+	if (!empty($scripts)) {
+		echo '<script type="text/javascript">$(document).ready(function() {' . PHP_EOL;
+		echo implode(PHP_EOL, $scripts) . PHP_EOL;
+		echo '});</script>';
+	}
+}
 ?>
 
-
-
 <?php function choices_level($t){
-  global $section;
-  $f = $section.'_'.$t; ?>
+	global $section;
+	$f = $section.'_'.$t; ?>
       <ul>
         <li>
           <label for="Competency_<?php echo $f; ?>_0">
