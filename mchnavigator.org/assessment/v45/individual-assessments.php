@@ -111,14 +111,14 @@ function v45_results_by_section($uID) {
 			<ul>
 				<li><?php complete(); ?><a href="competency_05.php"><strong>Competency 5:</strong> Communication</a></li>
 				<li><?php complete(); ?><a href="competency_06.php"><strong>Competency 6:</strong> Negotiation and Conflict Resolution</a></li>
-				<li><?php complete(); ?><a href="competency_07.php"><strong>Competency 7:</strong> Responsive and Effective MCH Systems</a></li>
-				<li><?php complete(); ?><a href="competency_08.php"><strong>Competency 8:</strong> Community Expertise and Perspectives</a></li>
+				<li><?php complete(); ?><a href="competency_07.php"><strong>Competency 7:</strong> Community Health Factors</a></li>
+				<li><?php complete(); ?><a href="competency_08.php"><strong>Competency 8:</strong> Lived Experience in MCH</a></li>
 				<li><?php complete(); ?><a href="competency_09.php"><strong>Competency 9:</strong> Teaching Coaching, and Mentoring</a></li>
 				<li><?php complete(); ?><a href="competency_10.php"><strong>Competency 10:</strong> Interdisciplinary/Interprofessional Team Building</a></li>
 			</ul>
 			<h3>WIDER COMMUNITY</h3>
 			<ul>
-				<li><?php complete(); ?><a href="competency_11.php"><strong>Competency 11:</strong> Systems Approach</a></li>
+				<li><?php complete(); ?><a href="competency_11.php"><strong>Competency 11:</strong> Systems Thinking</a></li>
 				<li><?php complete(); ?><a href="competency_12.php"><strong>Competency 12:</strong> Policy</a></li>
 			</ul>
 		</div>
