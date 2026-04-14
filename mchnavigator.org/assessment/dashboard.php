@@ -110,8 +110,7 @@ function get_assessment_results_by_comp($layout, $uID) {
 			$comps45 = get_assessment_results_by_comp('SA_Responses_v45', $uID);
 			?>
 			<hr>
-			<h3><a id="results"></a>Version 4.5 Results </h3>
-			<h4>(For user who have taken the self-assessment from mid-August 2024 onward)</h4>
+			<h3><a id="results"></a>Your current results </h3>
 			<?php if (sizeof($comps45) == 12){ ?>
 			<p><strong>Congratulations!</strong> You have completed the entire self-assessment!</p>
 			<?php } ?>
@@ -123,7 +122,7 @@ function get_assessment_results_by_comp($layout, $uID) {
 			<?php } ?>
 
 			<!-- V4 -->
-			<?php
+			<!-- <?php
 			$comps4 = get_assessment_results_by_comp('SA_Responses_v4', $uID);
 			?>
 			<hr>
@@ -137,7 +136,7 @@ function get_assessment_results_by_comp($layout, $uID) {
 			<p>You can also see <a href="v4/past-results.php">past results for each competency</a> that you have taken to track your progress over time.</p>
 			<?php } else{ ?>
 			<p>You have not taken Version 4.0 of the self-assessment in full or in part.</p>
-			<?php } ?>
+			<?php } ?> -->
 		</section>
 
 		<!-- FEEDBACK -->

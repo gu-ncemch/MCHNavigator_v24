@@ -1,5 +1,5 @@
 <?php
-//$page = 'Home';
+$page = '';
 $section = 'new home page';
 $page_title = 'MCH Navigator | A Training Portal for MCH Professionals';
 include ('incl/header.html');
