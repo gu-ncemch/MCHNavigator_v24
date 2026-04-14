@@ -1,18 +1,36 @@
 <?php
-	include_once(__DIR__ . "/../../../globals/filemaker_init.php");
-	$fm = db_connect("MCH-Navigator");
+	require_once __DIR__ . '/../../filemaker/data-api.php';
 
-	//get user info
-	$request = $fm->newFindCommand('SA_Users');
-	$request->addFindCriterion('email', "==\"" . $_POST['email'] . "\"");
-	$result = $request->execute();
-	$record = $result->getFirstRecord();
-
-	if (FileMaker::isError($result)) {
-		$errorOnPage = $result->getMessage();
-	}
-
+	$email = isset($_POST['email']) ? scrubber($_POST['email'], 'email') : '';
 	$errorOnPage = '';
+	$record = null;
+
+	if ($email === '') {
+		$errorOnPage = 'Please provide an email address.';
+	} else {
+		$request = array(
+			'database' => 'MCH-Navigator',
+			'layout' => 'SA_Users',
+			'action' => 'find',
+			'parameters' => array(
+				'query' => array(
+					array(
+						'email' => '=="' . $email . '"',
+					),
+				),
+				'limit' => 1,
+			),
+		);
+
+		$result = do_filemaker_request($request, 'array');
+		$resultCode = (int) ($result['messages'][0]['code'] ?? 500);
+
+		if ($resultCode !== 0 || empty($result['response']['data'][0])) {
+			$errorOnPage = $result['messages'][0]['message'] ?? 'No matching account was found.';
+		} else {
+			$record = fm_record_shim($result['response']['data'][0]);
+		}
+	}
 
 $section = 'assessment';
 $page = 'Password Reset';
@@ -29,7 +47,7 @@ include ('../incl/header.html');
 } else { ?>
 <?php
 	# MAIL
-	$to = $_POST['email'];
+	$to = $email;
 	$from = "no-reply@mchnavigator.org";
 	$fromname = "MCHsmart";
 	$replyto = "MCHnavigator@ncemch.org";

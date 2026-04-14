@@ -1,7 +1,6 @@
 <?php
 include("../account/cookie.php");
-include_once(__DIR__ . "/../../../globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
+require_once __DIR__ . '/../../filemaker/data-api.php';
 $section = 'assessment';
 $page = 'competency';
 $page_title = "Self-Assessment: Competency 7";
@@ -18,10 +17,8 @@ include ('../../incl/header.html');
 		<p class="saved">Your responses for Competency <?php echo $_GET["saved"]; ?> have been saved!</p>
 		<?php } ?>
 
-		<h2>Responsive and Effective MCH Systems</h2>
-		<p><strong><img src="../../images/competency7.jpg" alt="Diversity, Equity, Inclusion, and Accessibility" class="right border">Definition. </strong><em>Professional Responsiveness</em> is a developmental process that occurs along a continuum and evolves over an extended period. It broadly represents the knowledge and skills necessary to communicate and interact effectively with people, helping to ensure that the needs of individuals and communities are met in a respectful and comprehensive way. Developing professional responsiveness is an ongoing and adaptive process.</p>
-		<p><em>Effective healthcare</em> seeks to understand and address the unique challenges faced by different population groups, recognizing the importance of comprehensive and individualized approaches to health and well-being.</p>
-		<p><strong>For More Information. </strong>Read more about this competency on the <a href="https://mchb.hrsa.gov/training/leadership-07.asp" target="_blank">MCH Leadship Competencies website</a>.</p>
+		<h2>Community Health Factors</h2>
+		<p><strong><img src="../../images/competency7.jpg" alt="Community Health Factors" class="right border">Definition. </strong>Promoting the health of women, children and families, especially those in underserved areas, requires an understanding of the complex community factors that influence health. Community factors such as transportation, housing, lifestyle, access to health care services, environmental factors, and social support can have a significant impact on health. Engaging with communities to identify and address community factors can improve the health and quality of life of individuals in those communities. To address these factors, the MCH workforce may work synergistically and collaboratively across sectors to help individuals and communities prevent disease and promote healthy living.</p>
 		<p><strong>For each of the knowledge and skills statement below, respond with your personal knowledge and skills for that question. </strong></p>
 
 		<?php

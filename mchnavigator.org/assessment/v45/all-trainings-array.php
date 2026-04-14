@@ -1,24 +1,37 @@
 <?php
 // get all web ready trainings
-$request = $fm->newFindCommand('all-trainings');
-	$request->addFindCriterion('Web Ready', "=Web Ready");
-	$request->addFindCriterion('BestOf', "true");
-	#$request->addSortRule('BestOf', 1, FILEMAKER_SORT_DESCEND);
-	$request->addSortRule('Title', 1, FILEMAKER_SORT_ASCEND);
-$result = $request->execute();
+require_once __DIR__ . '/../../filemaker/data-api.php';
 
-if (FileMaker::isError($result)) {
-	echo $result->getMessage();
-} else {
-	$records = $result->getRecords();
+$request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'all-trainings',
+	'action' => 'find',
+	'parameters' => array(
+		'query' => array(
+			array(
+				'Web Ready' => '=Web Ready',
+				'BestOf' => 'true',
+			),
+		),
+		'sort' => array(
+			array(
+				'fieldName' => 'Title',
+				'sortOrder' => 'ascend',
+			),
+		),
+		'limit' => 500,
+	),
+);
+$result = do_filemaker_request($request, 'array');
 
-	global $all_trainings;
-	$all_trainings = array();
+global $all_trainings;
+$all_trainings = array();
 
-	foreach ($records as $training) {
+if ((int) ($result['messages'][0]['code'] ?? 500) === 0 && !empty($result['response']['data'])) {
+	foreach ($result['response']['data'] as $training) {
 		$item = array(
-			'<li><a href="/trainings/detail.php?id=' . $training->getField('Record Number') . '" target="_blank">' . $training->getField('Title') . '</a> ' . $training->getField('Level') . ', ' . $training->getField('Length') . '</li>',
-			$training->getField('Competencies_v4_5')
+			'<li><a href="/trainings/detail.php?id=' . ($training['fieldData']['Record Number'] ?? '') . '" target="_blank">' . ($training['fieldData']['Title'] ?? '') . '</a> ' . ($training['fieldData']['Level'] ?? '') . ', ' . ($training['fieldData']['Length'] ?? '') . '</li>',
+			$training['fieldData']['Competencies_v4_5'] ?? ''
 		);
 		array_push($all_trainings, $item);
 	}
