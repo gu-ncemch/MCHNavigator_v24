@@ -1,33 +1,31 @@
 <?php
-	#print_r($record);
-	// get the data
-	#$id = $record->getRecordID(); #if using the direct method
-	$id = $record->getField('Record Number'); #if using the rougher method
-	$Title = $record->getField('Title') != "" ? $record->getField('Title') : "n.a.";
-	$YearDeveloped = $record->getField('Year Developed') != "" ? $record->getField('Year Developed') : "n.a.";
-	$Source = $record->getField('Source') != "" ? $record->getField('Source') : "n.a.";
-	$Source = $record->getField('Source URL') != "" ? '<a href="'.$record->getField('Source URL').'" target="_blank" rel="external">'.$Source.'</a>' : $Source;
-	$Presenters = $record->getField('Presenters') != "" ? $record->getField('Presenters') : "n.a.";
-	$Type = $record->getField('Type') != "" ? $record->getField('Type') : "n.a.";
-	$Level = $record->getField('Level') != "" ? $record->getField('Level') : "n.a.";
-	$Length = $record->getField('Length') != "" ? $record->getField('Length') : "n.a.";
-	//$URL2 = $record->getField('URL 2') != "" ? ' <em>URL 2:</em> <a href="'.$record->getField('URL 2').'" target="_blank" rel="external">'.$record->getField('URL 2').'</a>.' : "";
+	$fieldData = $record['fieldData'] ?? array();
 
+	$id = $fieldData['Record Number'] ?? '';
+	$Title = ($fieldData['Title'] ?? '') !== '' ? $fieldData['Title'] : 'n.a.';
+	$YearDeveloped = ($fieldData['Year Developed'] ?? '') !== '' ? $fieldData['Year Developed'] : 'n.a.';
+	$Source = ($fieldData['Source'] ?? '') !== '' ? $fieldData['Source'] : 'n.a.';
+	$sourceUrl = $fieldData['Source URL'] ?? '';
+	$Source = $sourceUrl !== '' ? '<a href="' . $sourceUrl . '" target="_blank" rel="external">' . $Source . '</a>' : $Source;
+	$Presenters = ($fieldData['Presenters'] ?? '') !== '' ? $fieldData['Presenters'] : 'n.a.';
+	$Type = ($fieldData['Type'] ?? '') !== '' ? $fieldData['Type'] : 'n.a.';
+	$Level = ($fieldData['Level'] ?? '') !== '' ? $fieldData['Level'] : 'n.a.';
+	$Length = ($fieldData['Length'] ?? '') !== '' ? $fieldData['Length'] : 'n.a.';
 
-	$URL1 = $record->getField('URL') != "" ? $record->getField('URL') : "";
-	$URL1Notes = $record->getField('URL Notes') != "" ? $record->getField('URL Notes') : "";
+	$URL1 = $fieldData['URL'] ?? '';
+	$URL1Notes = $fieldData['URL Notes'] ?? '';
 
-	$URL2 = $record->getField('URL 2') != "" ? $record->getField('URL 2') : "";
-	$URL2Notes = $record->getField('URL 2 Notes') != "" ? $record->getField('URL 2 Notes') : "";
+	$URL2 = $fieldData['URL 2'] ?? '';
+	$URL2Notes = $fieldData['URL 2 Notes'] ?? '';
 
-	$Title = $URL1 != "" ? '<a href="'.$URL1.'">'.$Title.'</a>' : $Title;
-	$URL2 = $URL2 != "" ? ' <a href="'.$URL2.'" target="_blank" rel="external">'.$URL2Notes.'</a>' : "";
+	$Title = $URL1 !== '' ? '<a href="' . $URL1 . '">' . $Title . '</a>' : $Title;
+	$URL2 = $URL2 !== '' ? ' <a href="' . $URL2 . '" target="_blank" rel="external">' . $URL2Notes . '</a>' : '';
 
-	$Annotation = $record->getField('Annotation');
-	$LearningObjectives = $record->getField('Learning Objectives');
-	$Competencies = $record->getField('Competencies Addressed');
-	$SpecialInstructions = $record->getField('Special Instructions');
-	$ContinuingEducation = $record->getField('CE Details');
+	$Annotation = $fieldData['Annotation'] ?? '';
+	$LearningObjectives = $fieldData['Learning Objectives'] ?? '';
+	$Competencies = $fieldData['Competencies Addressed'] ?? '';
+	$SpecialInstructions = $fieldData['Special Instructions'] ?? '';
+	$ContinuingEducation = $fieldData['CE Details'] ?? '';
 ?>
 
 <div class="record" id="record<?php echo $id; ?>" style="border-bottom: 1px solid #f2f2f2; display: block; clear: both; display: table; margin-bottom: 1rem;">

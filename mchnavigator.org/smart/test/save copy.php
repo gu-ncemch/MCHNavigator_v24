@@ -1,7 +1,6 @@
 <?php
 include("../../account/cookie.php");
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
+require_once __DIR__ . '/../../filemaker/data-api.php';
 $section = 'assessment';
 $page = 'Pretest';
 include ('../incl/header.html');
@@ -25,9 +24,6 @@ include ('../incl/header.html');
 		<?php 
 
 		include("../../account/cookie.php");
-
-		include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-		include_once("/home/dh_mch_sftp/globals/scrubber.php");
 
 		$user_points = 0;
 		$correct_answers = array(
@@ -74,35 +70,37 @@ include ('../incl/header.html');
 		extract($_POST, EXTR_OVERWRITE);
 
 		// give the data up to the data gods -------------------------------------------------------
-		$fm      = db_connect("MCH-Navigator");
+		$fieldData = array(
+			'uID' => $uID,
+		);
 
 		// if this is the post test and they have already taken it, delete the old one
 		$recordIDtoDelete = null;
 		if($test_type == "post"){
-			// echo "post logic";
-			$request = $fm->newFindCommand('MCH_Smart_Test_Responses');
-			$request->addFindCriterion('uID', "==\"" . $uID . "\"");
-			$request->addFindCriterion("test_type", "post");
-			$result = $request->execute();
-			if (!FileMaker::isError($result)) {
-				$records = $result->getRecords();
-				$record = $records[0];
-				$recordIDtoDelete = $record->getField('recordID');
-				// echo $recordID;
-				// move this so it goes after a successful save...
-				// $record_to_delete = $fm->getRecordById('MCH_Smart_Test_Responses', $recordID);
-				// $record_to_delete->delete();
-				$newDelete = $fm->newDeleteCommand('MCH_Smart_Test_Responses', $recordIDtoDelete);
-				$deleteResult = $newDelete->execute();
+			$find_request = array(
+				'database' => 'MCH-Navigator',
+				'layout' => 'MCH_Smart_Test_Responses',
+				'action' => 'find',
+				'parameters' => array(
+					'query' => array(
+						array(
+							'uID' => '=="' . $uID . '"',
+							'test_type' => '=="post"',
+						),
+					),
+					'limit' => 1,
+				),
+			);
+			$result = do_filemaker_request($find_request, 'array');
+			$resultCode = (int) ($result['messages'][0]['code'] ?? 500);
+			if ($resultCode === 0 && !empty($result['response']['data'][0])) {
+				$recordIDtoDelete = (int) ($result['response']['data'][0]['recordId'] ?? 0);
 			}
 		}
 
-		$record = $fm->newAddCommand('MCH_Smart_Test_Responses');
-		$record->setField('uID', $uID);
-
 		echo '<script type="text/javascript">$( document ).ready(function() { $("input").prop("disabled", true);';
 		foreach($_POST as $fieldname => $response){
-			$record->setField($fieldname, $response);
+			$fieldData[$fieldname] = $response;
 			// echo $fieldname . ' = ' . $response . PHP_EOL;
 			if(strpos($fieldname,"Competency_") !== false){
 				// echo $correct_answers[$fieldname] . ' ?= ' . $response . PHP_EOL;
@@ -115,18 +113,33 @@ include ('../incl/header.html');
 
 		$score = round($user_points/36*100).'%';
 		echo $score;
-		$record->setField('score', $score);
-
-		$result = $record->execute();
+		$fieldData['score'] = $score;
+		$create_request = array(
+			'database' => 'MCH-Navigator',
+			'layout' => 'MCH_Smart_Test_Responses',
+			'action' => 'create',
+			'parameters' => array(
+				'fieldData' => $fieldData,
+			),
+		);
+		$result = do_filemaker_request($create_request, 'array');
+		$createCode = (int) ($result['messages'][0]['code'] ?? 500);
 		
-		if (FileMaker::isError($result)) {
+		if ($createCode !== 0) {
 			echo "error!";
-			echo $result->getMessage();
+			echo htmlspecialchars($result['messages'][0]['message'] ?? 'Unknown FileMaker error', ENT_QUOTES, 'UTF-8');
 		} else {
 			// saved
 			if(!empty($recordIDtoDelete)){
-				$newDelete = $fm->newDeleteCommand('MCH_Smart_Test_Responses', $recordIDtoDelete);
-				$deleteResult = $newDelete->execute();
+				$delete_request = array(
+					'database' => 'MCH-Navigator',
+					'layout' => 'MCH_Smart_Test_Responses',
+					'action' => 'delete',
+					'record' => $recordIDtoDelete,
+					'challenge_field' => 'uID',
+					'challenge_value' => (string) $uID,
+				);
+				do_filemaker_request($delete_request, 'array');
 			}
 		}
 		?>

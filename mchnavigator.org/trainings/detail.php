@@ -10,7 +10,7 @@ include ('../incl/header.html');
 <?php include('../incl/title.html'); ?>	
 
 <?php /* SETUP */
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
+include_once(__DIR__ . "/../../globals/filemaker_init.php");
 $fm = db_connect("MCH-Navigator");
 
 /* by id 

@@ -1,5 +1,6 @@
 <?php
-setcookie ('mchnavsa', '', time()-50000, '/', 'www.mchnavigator.org', isset($_SERVER["HTTPS"]), true);
+$cookieDomain = (($_SERVER['HTTP_HOST'] ?? '') === 'www.mchnavigator.org') ? 'www.mchnavigator.org' : '';
+setcookie ('mchnavsa', '', time()-50000, '/', $cookieDomain, isset($_SERVER["HTTPS"]), true);
 unset($_COOKIE['mchnavsa']);
 
 $section = 'assessment';

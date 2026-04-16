@@ -1,7 +1,11 @@
 <?php include("cookie.php"); ?>
 <?php
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-include_once("/home/dh_mch_sftp/globals/scrubber.php");
+require_once __DIR__ . '/../../filemaker/data-api.php';
+
+$currentEmail = $email;
+$currentAdmin = $admin;
+$errorOnPage = null;
+$cookieDomain = (($_SERVER['HTTP_HOST'] ?? '') === 'www.mchnavigator.org') ? 'www.mchnavigator.org' : '';
 
 
 // prep data --------------------------------------------------------------------------------------------------------------
@@ -56,38 +60,62 @@ if($errors != ''){
 
 
 // see if email already exists ------------------------------------------------------------------------------------------------------------
-$fm      = db_connect("MCH-Navigator");
+$record_request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'SA_Users',
+	'action' => 'single',
+	'record' => (int) $uID,
+);
 
-$record = $fm->getRecordById('SA_Users', $uID);
-#echo $result->getMessage();
-if (empty($record)) {
+$record = do_filemaker_request($record_request, 'array');
+$record_code = (int) ($record['messages'][0]['code'] ?? 500);
+
+if ($record_code !== 0 || empty($record['response']['data'][0])) {
 	// email already registered
 	$errorOnPage = 100;
 } else {
-	// create new registration record
-	#echo 200;
-	//$record = $fm->createRecord('SA_Users');
-	$record->setField('name_first', $name_first);
-	$record->setField('name_last', $name_last);
-	$record->setField('email', $email);
-	$record->setField('password', $password);
-	$record->setField('state', $state);
-	$record->setField('you', $you);
-	$record->setField('you_other', $you_other);
-	$record->setField('years', $years);
-	$record->setField('usage', $usage);
-	$record->setField('usage_other', $usage_other);
-	$record->setField('special_group', $special_group);
-	$record->setField('gender', $gender);
-	$record->setField('age', $age);
-	$record->setField('race', $race);
-	$record->setField('ethnicity', $ethnicity);
-	$record->setField('mixed', $mixed);
-	$result = $record->commit();
+	$update_request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'SA_Users',
+		'action' => 'edit',
+		'record' => (int) $uID,
+		'challenge_field' => 'email',
+		'challenge_value' => $currentEmail,
+		'parameters' => array(
+			'fieldData' => array(
+				'name_first' => $name_first,
+				'name_last' => $name_last,
+				'email' => $email,
+				'password' => $password,
+				'state' => $state,
+				'you' => $you,
+				'you_other' => $you_other,
+				'years' => $years,
+				'usage' => $usage,
+				'usage_other' => $usage_other,
+				'special_group' => $special_group,
+				'gender' => $gender,
+				'age' => $age,
+				'race' => $race,
+				'ethnicity' => $ethnicity,
+				'mixed' => $mixed,
+			),
+		),
+	);
 
-	if (FileMaker::isError($result)) {
+	$result = do_filemaker_request($update_request, 'array');
+	$update_code = (int) ($result['messages'][0]['code'] ?? 500);
+
+	if ($update_code !== 0) {
 		// save error
 		$errorOnPage = 200;
+	} else {
+		$cookieArrayPut = array(
+			'uID' => $uID,
+			'email' => $email,
+			'admin' => $currentAdmin,
+		);
+		setcookie('mchnavsa', serialize($cookieArrayPut), time() + 60 * 60 * 24 * 30, '/', $cookieDomain, isset($_SERVER["HTTPS"]), true);
 	}
 }
 $section = 'assessment';

@@ -4,9 +4,9 @@
 session_start();
 	session_destroy();
 	session_start();
-	include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-	include_once("/home/dh_mch_sftp/globals/scrubber.php");
+	require_once __DIR__ . '/../../filemaker/data-api.php';
 $errorOnPage = null;
+$cookieDomain = (($_SERVER['HTTP_HOST'] ?? '') === 'www.mchnavigator.org') ? 'www.mchnavigator.org' : '';
 
 // prep data --------------------------------------------------------------------------------------------------------------
 // print_r($_POST);
@@ -63,55 +63,71 @@ if($errors != ''){
 
 
 // see if email already exists ------------------------------------------------------------------------------------------------------------
-$fm      = db_connect("MCH-Navigator");
+$find_request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'SA_Users',
+	'action' => 'find',
+	'parameters' => array(
+		'query' => array(
+			array(
+				'email' => '=="' . $email . '"',
+			),
+		),
+		'limit' => 1,
+	),
+);
 
-$request = $fm->newFindCommand('SA_Users');
-$request->addFindCriterion('email', "==\"" . $email . "\"");
-$result = $request->execute();
-#echo $result->getMessage();
-if (!FileMaker::isError($result)) {
+$result = do_filemaker_request($find_request, 'array');
+$find_code = (int) ($result['messages'][0]['code'] ?? 500);
+
+if ($find_code === 0 && !empty($result['response']['data'])) {
 	// email already registered
 	$errorOnPage = 100;
-} else if ($result->getMessage() == 'No records match the request') {
+} else if ($find_code === 401) {
 	// create new registration record
-	#echo 200;
-	//$record = $fm->createRecord('SA_Users');
-	$record = $fm->newAddCommand('SA_Users');
-	$record->setField('name_first', $name_first);
-	$record->setField('name_last', $name_last);
-	$record->setField('email', $email);
-	$record->setField('password', $password);
-	$record->setField('state', $state);
-	$record->setField('you', $you);
-	$record->setField('you_other', $you_other);
-	$record->setField('years', $years);
-	$record->setField('usage', $usage);
-	$record->setField('usage_other', $usage_other);
-	$record->setField('special_group', $special_group);
-	$record->setField('gender', $gender);
-	$record->setField('age', $age);
-	$record->setField('race', $race);
-	$record->setField('ethnicity', $ethnicity);
-	$record->setField('mixed', $mixed);
-	$record->setField('initial_registration', "MCHsmart");
-	//date_default_timezone_set("America/New_York");
-	//$record->setField('date_lastlogin', date("n/j/Y g:i:s A"));
-	$result = $record->execute();
+	$create_request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'SA_Users',
+		'action' => 'create',
+		'parameters' => array(
+			'fieldData' => array(
+				'name_first' => $name_first,
+				'name_last' => $name_last,
+				'email' => $email,
+				'password' => $password,
+				'state' => $state,
+				'you' => $you,
+				'you_other' => $you_other,
+				'years' => $years,
+				'usage' => $usage,
+				'usage_other' => $usage_other,
+				'special_group' => $special_group,
+				'gender' => $gender,
+				'age' => $age,
+				'race' => $race,
+				'ethnicity' => $ethnicity,
+				'mixed' => $mixed,
+				'initial_registration' => 'MCHsmart',
+			),
+		),
+	);
 
-	if (FileMaker::isError($result)) {
+	$result = do_filemaker_request($create_request, 'array');
+	$create_code = (int) ($result['messages'][0]['code'] ?? 500);
+
+	if ($create_code !== 0 || empty($result['response']['recordId'])) {
 		// creation error
 		$errorOnPage = 200;
 	} else {
 		// get user id -------------------------------------------------------------------------------------
-		$result_datum = $result->getRecords();
-		$newID = $result_datum[0]->getRecordId();
+		$newID = $result['response']['recordId'];
 		// create cookie -----------------------------------------------------------------------------------
 		$cookieArrayPut = array(
 			'uID' => $newID,
 			'email' => $email
 		);
 		//setcookie( name, value, expire, path, domain, secure, httponly);
-		setcookie('mchnavsa', serialize($cookieArrayPut), time() + 60 * 60 * 24 * 30, '/', 'www.mchnavigator.org', isset($_SERVER["HTTPS"]), true);
+		setcookie('mchnavsa', serialize($cookieArrayPut), time() + 60 * 60 * 24 * 30, '/', $cookieDomain, isset($_SERVER["HTTPS"]), true);
 
 		#header("Location: https://www.brightfutures.org/wellchildcare/login/menu.php");
 		#exit;
@@ -167,7 +183,7 @@ include ('../incl/header.html');
 	$message .= '<p>Go to <a href="https://www.mchnavigator.org/smart">https://www.mchnavigator.org/smart</a> to access the MCHsmart curriculum.  Here’s to a good learning experience!</p>';
 
 	// build the email
-	include_once("/home/dh_mch_sftp/globals/phpmailer/setup.php");
+	include_once(__DIR__ . '/../../../globals/phpmailer/setup.php');
 	$mail->setFrom($from, $fromname);
 	$mail->addAddress($to);
 	$mail->addReplyTo($replyto, $replytoname);

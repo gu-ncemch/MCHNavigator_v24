@@ -1,7 +1,6 @@
 <?php
 include("account/cookie.php");
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
+require_once __DIR__ . '/../filemaker/data-api.php';
 $section = 'assessment';
 $page = 'Certificate';
 include ('incl/header.html');
@@ -25,12 +24,20 @@ include ('incl/header.html');
 
 
 <?php
-include( "account/cookie.php" );
-include_once( "/home/dh_mch_sftp/globals/filemaker_init.php" );
-$fm = db_connect( "MCH-Navigator" );
 // get user record
-// echo $uID;
-$record = $fm->getRecordById( 'MCH_Smart_Dashboard', $uID );
+$request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'MCH_Smart_Dashboard',
+	'action' => 'single',
+	'record' => (int) $uID,
+);
+
+$result = do_filemaker_request($request, 'array');
+$recordData = $result['response']['data'][0] ?? array(
+	'recordId' => (int) $uID,
+	'fieldData' => array(),
+);
+$record = fm_record_shim($recordData);
 
 $display_name = $record->getField('name_first')." ".$record->getField('name_last');
 if( $display_name == " "){ $display_name = $record->getField('email'); }

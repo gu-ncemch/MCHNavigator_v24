@@ -1,7 +1,6 @@
 <?php
 include("../account/cookie.php");
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
+require_once __DIR__ . '/../../filemaker/data-api.php';
 $section = 'assessment';
 $page = 'personal';
 $page_title = "Self-Assessment";
@@ -11,25 +10,39 @@ include ('../../incl/header.html');
 $priorities = array();
 $understandings = array();
 function getPlan($section){
-	global $fm, $uID, $priorities, $understandings;
+	global $uID, $priorities, $understandings;
 	$plan = true;
 
-	$request = $fm->newFindCommand('SA_Responses_v45');
-    $request->addFindCriterion('uID', "=".$uID);
-	$request->addFindCriterion('section', "=".$section);
-	$request->addSortRule('date', 1, FILEMAKER_SORT_DESCEND);
-	$request->setRange(0, 1);
-	$result = $request->execute();
+	$request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'SA_Responses_v45',
+		'action' => 'find',
+		'parameters' => array(
+			'query' => array(
+				array(
+					'uID' => '=' . (int) $uID,
+					'section' => '=' . (int) $section,
+				),
+			),
+			'sort' => array(
+				array(
+					'fieldName' => 'date',
+					'sortOrder' => 'descend',
+				),
+			),
+			'limit' => 1,
+		),
+	);
+	$result = do_filemaker_request($request, 'array');
 
-	if (FileMaker::isError($result)) {
+	if ((int) ($result['messages'][0]['code'] ?? 500) !== 0 || empty($result['response']['data'][0])) {
 		#echo $result->getMessage();
 		echo '<p>You have not yet completed this Competency.</p>';
 		$priorities[$section] = "null";
 		$understandings[$section] = "null";
 	} else {
-		$records = $result->getRecords();
-		$record = $records[0];
-		$rID = $record->getField('rID');
+		$record = $result['response']['data'][0];
+		$rID = $record['fieldData']['rID'] ?? '';
 		#echo '<div class="accordion" id="competency'.sprintf('%02d', $section).'"><p class="aHead">click to see detailed results</p><div class="toggleContent">';
 		include("competency_past.php");
 		#echo '</div></div>';

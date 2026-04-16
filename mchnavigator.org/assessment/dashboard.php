@@ -1,12 +1,59 @@
 <?php
 
 include("account/cookie.php");
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
+require_once __DIR__ . '/../filemaker/data-api.php';
 $section = 'assessment';
 $page = 'main';
 $page_title = "Self-Assessment";
 include ('../incl/header.html');
+
+function get_assessment_results_by_comp($layout, $uID) {
+	$request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => $layout,
+		'action' => 'find',
+		'parameters' => array(
+			'query' => array(
+				array(
+					'uID' => '=' . (int) $uID,
+				),
+			),
+			'sort' => array(
+				array(
+					'fieldName' => 'section',
+					'sortOrder' => 'ascend',
+				),
+				array(
+					'fieldName' => 'date',
+					'sortOrder' => 'descend',
+				),
+			),
+			'limit' => 500,
+		),
+	);
+
+	$result = do_filemaker_request($request, 'array');
+	if ((int) ($result['messages'][0]['code'] ?? 500) !== 0 || empty($result['response']['data'])) {
+		return array();
+	}
+
+	$comps = array();
+	foreach ($result['response']['data'] as $record) {
+		$section = $record['fieldData']['section'] ?? '';
+		$date = $record['fieldData']['date'] ?? '';
+		$rID = $record['fieldData']['rID'] ?? '';
+		if ($section === '' || $rID === '') {
+			continue;
+		}
+		if (!isset($comps[$section])) {
+			$comps[$section] = array();
+		}
+		$zeroLead = ((int) $section < 10) ? '0' : '';
+		$comps[$section][] = '<a href="competency_' . $zeroLead . $section . '.php?rID=' . $rID . '" class="btnDate">' . date('l F jS, Y', strtotime($date)) . '</a>';
+	}
+
+	return $comps;
+}
 ?>
 <div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
 	<?php include('../incl/leftnav.html'); ?>
@@ -60,39 +107,10 @@ include ('../incl/header.html');
 
 			<!-- V4.5 -->
 			<?php
-		  	// version 4
-			$comps45 = array();
-			// unset($comps45);
-			// get questions
-			$request = $fm->newFindCommand('SA_Responses_v45');
-			$request->addFindCriterion('uID', "=".$uID);
-			$request->addSortRule('section', 1, FILEMAKER_SORT_ASCEND);
-			$request->addSortRule('date', 2, FILEMAKER_SORT_DESCEND);
-			$result = $request->execute();
-			if (FileMaker::isError($result)) {
-				#echo $result->getMessage();
-			} else {
-				$records = $result->getRecords();
-				$groupingHeader = '';
-				$compareHeading = '';
-				foreach ($records as $record) {
-					// compare types and output the heading if needed
-					$compareHeading = $record->getField('section');
-					if (!isset($comps45[$compareHeading])) { $comps45[$compareHeading] = array(); }
-					if($groupingHeader != $compareHeading){
-						//echo $compareHeading;
-						$groupingHeader = $compareHeading;
-					}
-					// output it all, finally!
-					$zeroLead = $compareHeading < 10 ? "0" : "";
-					// date with timestamp == array_push($comps45[$compareHeading], '<a href="competency_'.$zeroLead.$compareHeading.'.php?rID='.$record->getField('rID').'" class="btnDate">'.date('l F jS, Y \a\t g:ia',strtotime($record->getField('date'))).'</a>');
-					array_push($comps45[$compareHeading], '<a href="competency_'.$zeroLead.$compareHeading.'.php?rID='.$record->getField('rID').'" class="btnDate">'.date('l F jS, Y',strtotime($record->getField('date'))).'</a>');
-				}
-			}
-		?>
+			$comps45 = get_assessment_results_by_comp('SA_Responses_v45', $uID);
+			?>
 			<hr>
-			<h3><a id="results"></a>Version 4.5 Results </h3>
-			<h4>(For user who have taken the self-assessment from mid-August 2024 onward)</h4>
+			<h3><a id="results"></a>Your current results </h3>
 			<?php if (sizeof($comps45) == 12){ ?>
 			<p><strong>Congratulations!</strong> You have completed the entire self-assessment!</p>
 			<?php } ?>
@@ -104,37 +122,9 @@ include ('../incl/header.html');
 			<?php } ?>
 
 			<!-- V4 -->
-			<?php
-		  	// version 4
-			$comps4 = array();
-			// unset($comps4);
-			// get questions
-			$request = $fm->newFindCommand('SA_Responses_v4');
-			$request->addFindCriterion('uID', "=".$uID);
-			$request->addSortRule('section', 1, FILEMAKER_SORT_ASCEND);
-			$request->addSortRule('date', 2, FILEMAKER_SORT_DESCEND);
-			$result = $request->execute();
-			if (FileMaker::isError($result)) {
-				#echo $result->getMessage();
-			} else {
-				$records = $result->getRecords();
-				$groupingHeader = '';
-				$compareHeading = '';
-				foreach ($records as $record) {
-					// compare types and output the heading if needed
-					$compareHeading = $record->getField('section');
-					if (!isset($comps4[$compareHeading])) { $comps4[$compareHeading] = array(); }
-					if($groupingHeader != $compareHeading){
-						//echo $compareHeading;
-						$groupingHeader = $compareHeading;
-					}
-					// output it all, finally!
-					$zeroLead = $compareHeading < 10 ? "0" : "";
-					// date with timestamp == array_push($comps4[$compareHeading], '<a href="competency_'.$zeroLead.$compareHeading.'.php?rID='.$record->getField('rID').'" class="btnDate">'.date('l F jS, Y \a\t g:ia',strtotime($record->getField('date'))).'</a>');
-					array_push($comps4[$compareHeading], '<a href="competency_'.$zeroLead.$compareHeading.'.php?rID='.$record->getField('rID').'" class="btnDate">'.date('l F jS, Y',strtotime($record->getField('date'))).'</a>');
-				}
-			}
-		?>
+			<!-- <?php
+			$comps4 = get_assessment_results_by_comp('SA_Responses_v4', $uID);
+			?>
 			<hr>
 			<h3><a id="results"></a>Version 4.0 Results </h3>
 			<h4>(For users who have taken the self-assessment from January 2019 - mid-August 2024)</h4>
@@ -146,7 +136,7 @@ include ('../incl/header.html');
 			<p>You can also see <a href="v4/past-results.php">past results for each competency</a> that you have taken to track your progress over time.</p>
 			<?php } else{ ?>
 			<p>You have not taken Version 4.0 of the self-assessment in full or in part.</p>
-			<?php } ?>
+			<?php } ?> -->
 		</section>
 
 		<!-- FEEDBACK -->

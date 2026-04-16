@@ -1,11 +1,56 @@
 <?php
 include("../account/cookie.php");
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
+require_once __DIR__ . '/../../filemaker/data-api.php';
 $section = 'assessment';
 $page = 'individual';
 $page_title = "Individual Assessments";
 include ('../../incl/header.html');
+
+function v45_results_by_section($uID) {
+	$request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'SA_Responses_v45',
+		'action' => 'find',
+		'parameters' => array(
+			'query' => array(
+				array(
+					'uID' => '=' . (int) $uID,
+				),
+			),
+			'sort' => array(
+				array(
+					'fieldName' => 'section',
+					'sortOrder' => 'ascend',
+				),
+				array(
+					'fieldName' => 'date',
+					'sortOrder' => 'descend',
+				),
+			),
+			'limit' => 500,
+		),
+	);
+
+	$result = do_filemaker_request($request, 'array');
+	$comps = array();
+	if ((int) ($result['messages'][0]['code'] ?? 500) !== 0 || empty($result['response']['data'])) {
+		return $comps;
+	}
+
+	foreach ($result['response']['data'] as $record) {
+		$section = (int) ($record['fieldData']['section'] ?? 0);
+		if ($section === 0) {
+			continue;
+		}
+		if (!isset($comps[$section])) {
+			$comps[$section] = array();
+		}
+		$zeroLead = $section < 10 ? "0" : "";
+		$comps[$section][] = '<a href="competency_'.$zeroLead.$section.'.php?rID='.($record['fieldData']['rID'] ?? '').'" class="btnDate">'.date('l F jS, Y', strtotime($record['fieldData']['date'] ?? '')).'</a>';
+	}
+
+	return $comps;
+}
 ?>
 <div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
 	<?php include('../../incl/leftnav.html'); ?>
@@ -27,34 +72,7 @@ include ('../../incl/header.html');
 			<li><span style="color: #9A0019">RESPOND</span> with your current level of KNOWLEDGE and your current SKILL SET for each statement.</li>
 		</ul>
 		<?php
-	// get questions
-	$request = $fm->newFindCommand('SA_Responses_v45');
-	$request->addFindCriterion('uID', "=".$uID);
-	$request->addSortRule('section', 1, FILEMAKER_SORT_ASCEND);
-	$request->addSortRule('date', 2, FILEMAKER_SORT_DESCEND);
-	$result = $request->execute();
-	if (FileMaker::isError($result)) {
-		#echo $result->getMessage();
-	} else {
-		$records = $result->getRecords();
-	}
-	// give the goods
-	$comps = array();
-	$groupingHeader = '';
-	$compareHeading = '';
-	foreach ($records as $record) {
-		// compare types and output the heading if needed
-		$compareHeading = $record->getField('section');
-		if($groupingHeader != $compareHeading){
-			$comps[$compareHeading] = array();
-			//echo $compareHeading;
-			$groupingHeader = $compareHeading;
-		}
-		// output it all, finally!
-		$zeroLead = $compareHeading < 10 ? "0" : "";
-		// date with timestamp == array_push($comps[$compareHeading], '<a href="competency_'.$zeroLead.$compareHeading.'.php?rID='.$record->getField('rID').'" class="btnDate">'.date('l F jS, Y \a\t g:ia',strtotime($record->getField('date'))).'</a>');
-		array_push($comps[$compareHeading], '<a href="competency_'.$zeroLead.$compareHeading.'.php?rID='.$record->getField('rID').'" class="btnDate">'.date('l F jS, Y',strtotime($record->getField('date'))).'</a>');
-	}
+	$comps = v45_results_by_section($uID);
 
 	// display past results function
 	$rsection = 1;

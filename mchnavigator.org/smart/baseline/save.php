@@ -1,50 +1,69 @@
 <?php
-// header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
-// header('Last-Modified: ' . gmdate( 'D, d M Y H:i:s') . ' GMT');
-// header('Cache-Control: no-store, no-cache, must-revalidate');
-// header('Cache-Control: post-check=0, pre-check=0', false);
-// header('Pragma: no-cache'); 
+require_once __DIR__ . '/../../filemaker/data-api.php';
 
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-
-// get user id -------------------------------------------------------------------------------------------------------------
 extract($_POST, EXTR_OVERWRITE);
-$fm      = db_connect("MCH-Navigator");
 
-// $rec = $fm->getRecordById('MCH_Smart_Baseline', $recordID);
+$find_request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'MCH_Smart_Baseline',
+	'action' => 'find',
+	'parameters' => array(
+		'query' => array(
+			array(
+				'uID' => '=="' . (string) $uID . '"',
+			),
+		),
+		'limit' => 1,
+	),
+);
 
-$request = $fm->newFindCommand('MCH_Smart_Baseline');
-// echo $uID;
+$find_result = do_filemaker_request($find_request, 'array');
+$fieldData = array();
 
-$request->addFindCriterion('uID', "==\"" . $uID . "\"");
-$result = $request->execute();
-if (!FileMaker::isError($result)) {
-	// record exists: update
-	$records = $result->getRecords();
-    $rec = $records[0];
-} else {
-	// no record: create
-	$rec = $fm->createRecord('MCH_Smart_Baseline');
-	$rec->setField("uID", $uID);
-}
-
-// if( FileMaker::isError($rec) ){
-// 	echo $rec->getMessage();
-// 	$rec = $fm->createRecord('MCH_Smart_Baseline');
-// 	$rec->setField("uID", $_POST['uID']);
-// }
-
-// print_r($_POST);
-foreach($_POST as $fieldname => $response){
-	if(strpos($fieldname,"Competency_") !== false){
-		$rec->setField($fieldname, $response);
+foreach ($_POST as $fieldname => $response) {
+	if (strpos($fieldname, 'Competency_') === 0) {
+		$fieldData[$fieldname] = (string) $response;
 	}
 }
 
-$result = $rec->commit();
-
-if (FileMaker::isError($result)) {
+if (empty($fieldData)) {
 	echo "Error saving responses.";
-	echo $result->getMessage();
-} else { echo "Success!"; }
+	echo " No competency fields were provided.";
+	exit;
+}
+
+if ((int) ($find_result['messages'][0]['code'] ?? 500) === 0 && !empty($find_result['response']['data'][0])) {
+	$record = $find_result['response']['data'][0];
+	$challengeValue = $record['fieldData']['uID'] ?? (string) $uID;
+	$edit_request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'MCH_Smart_Baseline',
+		'action' => 'edit',
+		'record' => (int) ($record['recordId'] ?? 0),
+		'challenge_field' => 'uID',
+		'challenge_value' => $challengeValue,
+		'parameters' => array(
+			'fieldData' => $fieldData,
+		),
+	);
+	$result = do_filemaker_request($edit_request, 'array');
+} else {
+	$fieldData['uID'] = (string) $uID;
+	$create_request = array(
+		'database' => 'MCH-Navigator',
+		'layout' => 'MCH_Smart_Baseline',
+		'action' => 'create',
+		'parameters' => array(
+			'fieldData' => $fieldData,
+		),
+	);
+	$result = do_filemaker_request($create_request, 'array');
+}
+
+if ((int) ($result['messages'][0]['code'] ?? 500) !== 0) {
+	echo "Error saving responses.";
+	echo $result['messages'][0]['message'] ?? ' Unknown FileMaker error.';
+} else {
+	echo "Success!";
+}
 ?>

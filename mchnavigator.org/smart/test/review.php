@@ -1,7 +1,6 @@
 <?php
-include("../../account/cookie.php");
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
+include("../account/cookie.php");
+require_once __DIR__ . '/../../filemaker/data-api.php';
 $section = 'assessment';
 $page = 'Review';
 include ('../incl/header.html');
@@ -41,11 +40,6 @@ include ('../incl/header.html');
 
 
 		<?php
-
-		include("../../account/cookie.php");
-
-		include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-		include_once("/home/dh_mch_sftp/globals/scrubber.php");
 
 		$correct_answers = array(
 			"Competency_1_1" => "B",
@@ -95,20 +89,29 @@ include ('../incl/header.html');
 		// echo $type;
 
 		// give the data up to the data gods -------------------------------------------------------
-		$fm = db_connect("MCH-Navigator");
-		$find = $fm->newFindCommand('MCH_Smart_Test_Responses');
-		$find->addFindCriterion('uID', $uID);
-		$find->addFindCriterion('test_type', $type);
-		$result = $find->execute();
+		$request = array(
+			'database' => 'MCH-Navigator',
+			'layout' => 'MCH_Smart_Test_Responses',
+			'action' => 'find',
+			'parameters' => array(
+				'query' => array(
+					array(
+						'uID' => '=="' . $uID . '"',
+						'test_type' => '=="' . $type . '"',
+					),
+				),
+				'limit' => 1,
+			),
+		);
+		$result = do_filemaker_request($request, 'array');
+		$resultCode = (int) ($result['messages'][0]['code'] ?? 500);
 
-
-		if (FileMaker::isError($result)) {
-			// echo "error!";
-			echo $result->getMessage();
+		$your_score = '0%';
+		if ($resultCode !== 0 || empty($result['response']['data'][0])) {
+			echo htmlspecialchars($result['messages'][0]['message'] ?? 'No test record found.', ENT_QUOTES, 'UTF-8');
 		} else {
-			// echo "good";
-			// $records = $result->getRecords();
-			$record = $result->getFirstRecord();
+			$recordData = $result['response']['data'][0];
+			$record = fm_record_shim($recordData);
 			$your_score = $record->getField('score').'%';
 
 			// print_r($record);
@@ -122,10 +125,11 @@ include ('../incl/header.html');
 			}
 
 			// use js to mark the user answers
-			foreach($record->_impl->_fields as $fieldname => $response){
+			foreach(($recordData['fieldData'] ?? array()) as $fieldname => $response){
 				if(strpos($fieldname,"Competency_") !== false){
-					echo '$("input[name=\''.$fieldname.'\'][value=\''.$response[0].'\']").parent().parent().addClass("user_answer");' . PHP_EOL;
-					echo '$("input[name=\''.$fieldname.'\'][value=\''.$response[0].'\']").prop("checked", true);' . PHP_EOL;
+					$responseValue = is_array($response) ? ($response[0] ?? '') : $response;
+					echo '$("input[name=\''.$fieldname.'\'][value=\''.$responseValue.'\']").parent().parent().addClass("user_answer");' . PHP_EOL;
+					echo '$("input[name=\''.$fieldname.'\'][value=\''.$responseValue.'\']").prop("checked", true);' . PHP_EOL;
 				}
 			}
 
@@ -145,7 +149,7 @@ include ('../incl/header.html');
 	  <?php
 		if ($type == "post") {
 			?>
-		<p>Congratulations for completing the post-test. Please compare this score with your pre-test score as a measure of your learning with MCHsmart. If you&rsquo;d like to review a section of the curriculum again, <a href="https://www.mchnavigator.org/smart/dashboard.php#learning">return to the Dashboard</a> and select the content that you would like to review.</p>
+		<p>Congratulations for completing the post-test. Please compare this score with your pre-test score as a measure of your learning with MCHsmart. If you&rsquo;d like to review a section of the curriculum again, <a href="/smart/dashboard.php#learning">return to the Dashboard</a> and select the content that you would like to review.</p>
 
 		<p>The next step on your learning journey is to share your reflections with other learners about the thoughts and insights you had as you progressed through the curriculum on the MCHtalk blog. Use the link below to start this process.</p>
 

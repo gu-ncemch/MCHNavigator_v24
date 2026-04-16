@@ -1,5 +1,5 @@
 <?php
-//$page = 'Home';
+$page = '';
 $section = 'new home page';
 $page_title = 'MCH Navigator | A Training Portal for MCH Professionals';
 include ('incl/header.html');
@@ -116,10 +116,18 @@ include ('incl/header.html');
 					<li><strong>New Brochures</strong>: <a href="documents/brochures/Microlearning-Brochure-2023.pdf">Micro-learning</a> | <a href="documents/brochures/Macrolearning-Brochure-2023.pdf">Macro-learning</a> | <a href="documents/brochures/Self-Assessment-Brochure-2023.pdf">Self-Assessment</a> | <a href="documents/brochures/Self-Assessment-Reach-Brochure-2023.pdf">Self-Assessment Reach</a> | <a href="documents/brochures/MCHalert-Brochure-2023.pdf">MCHalert</a> | <a href="documents/brochures/ATMCH-Brochure-2023.pdf">ATMCH</a></li>
 					<li><strong>Learn More</strong>: <a href="trainings/new.php">New Trainings Curated by the MCH Navigator</a></li>
 			  </ul>
-		  </div>
+			</div>
 			<div class="six columns">
 				<!-- mch alert -->
-				<?php include('/home/dh_mch_sftp/ncemch.org/mch-alert.html') ?>
+				<?php
+				$mchAlertLocal = __DIR__ . '/mch-alert.html';
+				$mchAlertLegacy = '/home/dh_mch_sftp/ncemch.org/mch-alert.html';
+				if (is_file($mchAlertLocal)) {
+					include($mchAlertLocal);
+				} else if (is_file($mchAlertLegacy)) {
+					include($mchAlertLegacy);
+				}
+				?>
 				<p><a href="connect/alert.php">Access the MCHalert page</a> to find past editions and subscription options</p>
 			  <!-- end mch alert -->
 			</div>

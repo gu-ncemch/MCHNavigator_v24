@@ -1,7 +1,6 @@
 <?php include("account/cookie.php"); ?>
 <?php
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-include_once("/home/dh_mch_sftp/globals/scrubber.php");
+require_once __DIR__ . '/../filemaker/data-api.php';
 
 
 // prep data --------------------------------------------------------------------------------------------------------------
@@ -13,27 +12,34 @@ $least_valuable		= isset($least_valuable) ? scrubber($least_valuable, 'string') 
 $difficulty			= isset($difficulty) ? scrubber($difficulty, 'string') : '';
 $application		= isset($application) ? scrubber($application, 'string') : '';
 
-// see if email already exists ------------------------------------------------------------------------------------------------------------
-$fm      = db_connect("MCH-Navigator");
+// save feedback ------------------------------------------------------------------------------------------------------------
+$create_request = array(
+	'database' => 'MCH-Navigator',
+	'layout' => 'MCH_Smart_Feedback',
+	'action' => 'create',
+	'parameters' => array(
+		'fieldData' => array(
+			'uID' => $uID,
+			'expectations' => $expectations,
+			'most_valuable' => $most_valuable,
+			'least_valuable' => $least_valuable,
+			'difficulty' => $difficulty,
+			'application' => $application,
+		),
+	),
+);
 
-$record = $fm->createRecord('MCH_Smart_Feedback');
-$record->setField('uID', $uID);
-$record->setField('expectations', $expectations);
-$record->setField('most_valuable', $most_valuable);
-$record->setField('least_valuable', $least_valuable);
-$record->setField('difficulty', $difficulty);
-$record->setField('application', $application);
-$result = $record->commit();
+$result = do_filemaker_request($create_request, 'array');
+$resultCode = (int) ($result['messages'][0]['code'] ?? 500);
 
-if (FileMaker::isError($result)) {
-	echo $result->getMessage();
-} 
+if ($resultCode !== 0) {
+	$errorMessage = $result['messages'][0]['message'] ?? 'Unknown FileMaker error';
+	echo htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8');
+}
 
 
 
 
-include_once("/home/dh_mch_sftp/globals/filemaker_init.php");
-$fm = db_connect("MCH-Navigator");
 $section = 'assessment';
 $page = 'Feedback';
 include ('incl/header.html');
